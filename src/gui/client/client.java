@@ -4,6 +4,7 @@ import src.gui.records.Client;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class client {
     public static void registration_form() {
@@ -63,6 +64,8 @@ public class client {
 
         Client client = new Client(first_name.getText(), last_name.getText(), email.getText(), credit_card_info.getText());
 
+        ArrayList<Client> clients = new ArrayList<>();
+        clients.add(client);
 
         frame.setVisible(true);
     }
