@@ -74,8 +74,7 @@ public class DBManager {
 
             System.out.println("Database and tables initialized successfully.");
         } catch (Exception e) {
-            e.printStackTrace();
-            System.err.println("Failed to initialize the database.");
+            System.out.println("Failed to initialize the database." + e);
         }
     }
 
@@ -99,7 +98,7 @@ public class DBManager {
                 return false; // Return false to indicate failure (duplicate email)
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
             return false; // Return false if there was an error executing the check query
         }
 
@@ -119,7 +118,7 @@ public class DBManager {
             System.out.println("Customer registered successfully!"); // Inform the user about successful registration
             return true; // Return true to indicate success
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
 
         return false; // Return false if there was an error during the insert
@@ -147,7 +146,7 @@ public class DBManager {
             System.out.println("Event created successfully!"); // Inform the user about successful event creation
             return true; // Return true to indicate success
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
 
         return false; // Return false if there was an error during the insert
@@ -174,7 +173,7 @@ public class DBManager {
             System.out.println("Ticket created successfully!"); // Inform the user about successful ticket creation
             return true; // Return true to indicate success
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
 
         return false; // Return false if there was an error during the insert
@@ -251,7 +250,7 @@ public class DBManager {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
             return false;
         }
     }
@@ -319,7 +318,7 @@ public class DBManager {
             return true; // Cancellation and refund successful
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
             return false;
         }
     }
@@ -377,7 +376,7 @@ public class DBManager {
             }
             return true; // Event cancellation and refunds successful
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
             return false; // Error during cancellation process
         }
     }
