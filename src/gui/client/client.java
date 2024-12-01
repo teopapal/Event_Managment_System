@@ -8,6 +8,8 @@ import java.util.ArrayList;
 
 public class client {
     public static void registration_form() {
+        ArrayList<Client> clients = new ArrayList<>();
+
         JFrame frame = new JFrame("User Registration");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setSize(400, 300);
@@ -58,14 +60,18 @@ public class client {
                 System.out.println("Last Name: " + last_name.getText());
                 System.out.println("Email: " + email.getText());
                 System.out.println("Credit Card: " + credit_card_info.getText());
+
+                Client client = new Client(first_name.getText(), last_name.getText(), email.getText(), credit_card_info.getText());
+
+
+                clients.add(client);
+
+                System.out.println(clients);
+
             }
         });
 
 
-        Client client = new Client(first_name.getText(), last_name.getText(), email.getText(), credit_card_info.getText());
-
-        ArrayList<Client> clients = new ArrayList<>();
-        clients.add(client);
 
         frame.setVisible(true);
     }
