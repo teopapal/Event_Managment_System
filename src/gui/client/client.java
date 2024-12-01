@@ -46,7 +46,7 @@ public class client {
         frame.add(submit_button);
         frame.add(message);
 
-
+        // ACTION LISTENER
         submit_button.addActionListener(_ -> {
             if (first_name.getText().isEmpty() || last_name.getText().isEmpty() || email.getText().isEmpty() || credit_card_info.getText().isEmpty()) {
                 message.setText("All fields are required!");
@@ -62,7 +62,6 @@ public class client {
                 System.out.println("Credit Card: " + credit_card_info.getText());
 
                 Client client = new Client(first_name.getText(), last_name.getText(), email.getText(), credit_card_info.getText());
-
 
                 clients.add(client);
 
