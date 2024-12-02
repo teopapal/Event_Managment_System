@@ -1,4 +1,4 @@
-package com.DBProject.gui.records;
+package com.DBProject.gui.event;
 
 public enum Event_type {
     CONCERT,

@@ -1,11 +1,11 @@
 package com.DBProject.data;
 
-import com.DBProject.gui.records.Client;
+import com.DBProject.gui.records.Customer;
+import com.DBProject.gui.records.Event;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 
 
@@ -78,7 +78,7 @@ public class DBManager {
         }
     }
 
-    public static boolean registerCustomer(Client client) {
+    public static boolean registerCustomer(Customer client) {
         if (client.first_name().isEmpty() || client.last_name().isEmpty()  || client.email().isEmpty() || client.credit_card_info().isEmpty()) {
             return false; // Validation check for empty fields
         }
@@ -125,8 +125,8 @@ public class DBManager {
     }
 
     // Method to add a new event
-    public static boolean createEvent(String name, String eventDate, String eventTime, String eventType, int capacity) {
-        if (name.isEmpty() || eventType.isEmpty() || eventDate.isEmpty() || eventTime.isEmpty() || capacity <= 0) {
+    public static boolean createEvent(Event event) {
+        if (event.name().isEmpty() || event.date() == null  || event.time() == null || event.capacity() <= 0) {
             return false; // Validation check for empty fields or invalid capacity
         }
 
@@ -134,12 +134,13 @@ public class DBManager {
         String insertQuery = "INSERT INTO Events (name, event_type, event_date, event_time, capacity) VALUES (?, ?, ?, ?, ?)";
 
         try (PreparedStatement insertEvent = con.prepareStatement(insertQuery)) {
+
             // Set parameters for the SQL query
-            insertEvent.setString(1, name);
-            insertEvent.setString(2, eventType);
-            insertEvent.setString(3, eventDate);
-            insertEvent.setString(4, eventTime);
-            insertEvent.setInt(5, capacity);
+            insertEvent.setString(1, event.name());
+            insertEvent.setString(2, event.type().toString());
+            insertEvent.setDate(3, event.date());
+            insertEvent.setTime(4, event.time());
+            insertEvent.setInt(5, event.capacity());
 
             // Execute the insert query
             insertEvent.executeUpdate();

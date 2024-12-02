@@ -1,15 +1,15 @@
-package com.DBProject.gui.client;
+package com.DBProject.gui.customer;
 
 import com.DBProject.data.DBManager;
-import com.DBProject.gui.records.Client;
+import com.DBProject.gui.records.Customer;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 
-public class client {
+public class customer {
     public static void registration_form() {
-        ArrayList<Client> clients = new ArrayList<>();
+        ArrayList<Customer> customers = new ArrayList<>();
 
         JFrame frame = new JFrame("User Registration");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -62,12 +62,12 @@ public class client {
                 System.out.println("Email: " + email.getText());
                 System.out.println("Credit Card: " + credit_card_info.getText());
 
-                Client client = new Client(first_name.getText(), last_name.getText(), email.getText(), credit_card_info.getText());
+                Customer customer = new Customer(first_name.getText(), last_name.getText(), email.getText(), credit_card_info.getText());
 
-                clients.add(client);
+                customers.add(customer);
 
-                DBManager.registerCustomer(client);
-                System.out.println(clients);
+                DBManager.registerCustomer(customer);
+                System.out.println(customers);
                 frame.dispose();
 
             }

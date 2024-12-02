@@ -1,4 +1,9 @@
 package com.DBProject.gui.records;
 
-public record Event(String name, int date, int time, Event_type type, int capacity) {
+import com.DBProject.gui.event.Event_type;
+
+import java.sql.Date;
+import java.sql.Time;
+
+public record Event(String name, Event_type type, Date date, Time time, int capacity) {
 }

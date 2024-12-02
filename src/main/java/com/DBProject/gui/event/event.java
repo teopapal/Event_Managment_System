@@ -1,10 +1,15 @@
 package com.DBProject.gui.event;
 
+import com.DBProject.data.DBManager;
 import com.DBProject.gui.records.Event;
-import com.DBProject.gui.records.Event_type;
 
 import javax.swing.*;
 import java.awt.*;
+import java.sql.Date;
+import java.sql.Time;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class event {
@@ -101,15 +106,51 @@ public class event {
                 System.out.println("Event Type: " + event_type_box.getSelectedItem());
                 System.out.println("Event Capacity: " + event_capacity.getText());
 
-                Event event = new Event(event_name.getText(), Integer.parseInt(event_date.getText()), Integer.parseInt(event_time.getText()), (Event_type) event_type_box.getSelectedItem(), Integer.parseInt(event_capacity.getText()));
+                DateTimeFormatter formatter;
+                LocalDate local_date;
+
+                try {
+                    formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                    local_date = LocalDate.parse(event_date.getText(), formatter);
+                } catch (Exception e) {
+                    message.setText("Invalid Date Format! Please use dd/MM/yyyy");
+                    message.setForeground(Color.RED);
+                    return;
+                }
+
+                LocalTime local_time;
+
+                try {
+                    formatter = DateTimeFormatter.ofPattern("HH:mm");
+                    local_time = LocalTime.parse(event_time.getText(), formatter);
+                } catch (Exception e) {
+                    message.setText("Invalid Time Format! Please use HH:mm");
+                    message.setForeground(Color.RED);
+                    return;
+                }
+
+                Event event = new Event(event_name.getText(), (Event_type) event_type_box.getSelectedItem(), Date.valueOf(local_date), Time.valueOf(local_time), Integer.parseInt(event_capacity.getText()));
 
                 events.add(event);
-
+                DBManager.createEvent(event);
                 System.out.println(events);
+                frame.dispose();
             }
         });
 
         frame.setVisible(true);
 
+    }
+
+    public static void cancel_event() {
+        JFrame frame = new JFrame("Cancel Event");
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setSize(400, 300);
+        frame.setVisible(true);
+
+        JLabel title = new JLabel("Cancel Event", SwingConstants.CENTER);
+        title.setFont(new Font("Arial", Font.BOLD, 16));
+        title.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        frame.add(title);
     }
 }

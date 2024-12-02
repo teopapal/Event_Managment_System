@@ -3,8 +3,11 @@ package com.DBProject.gui;
 import javax.swing.*;
 import java.awt.*;
 
-import static com.DBProject.gui.client.client.registration_form;
+import static com.DBProject.gui.customer.customer.registration_form;
+import static com.DBProject.gui.event.event.cancel_event;
 import static com.DBProject.gui.event.event.create_event_form;
+import static com.DBProject.gui.reservation.reservation.cancel_reservation;
+import static com.DBProject.gui.tickets.tickets.show_available_tickets;
 
 
 public class Gui_hub {
@@ -29,16 +32,23 @@ public class Gui_hub {
         //Buttons
         JButton register_button = new JButton("Register User");
         JButton create_event_button = new JButton("Create Event");
-
+        JButton show_tickets_button = new JButton("Show Tickets");
+        JButton cancel_reservation_button = new JButton("Cancel Reservation");
+        JButton cancel_event_button = new JButton("Cancel Event");
 
         button_panel.add(register_button);
         button_panel.add(create_event_button);
+        button_panel.add(show_tickets_button);
+        button_panel.add(cancel_reservation_button);
+        button_panel.add(cancel_event_button);
 
         main_frame.add(button_panel, BorderLayout.SOUTH);
 
-
         register_button.addActionListener(_ -> registration_form());
         create_event_button.addActionListener(_ -> create_event_form());
+        show_tickets_button.addActionListener(_ -> show_available_tickets());
+        cancel_reservation_button.addActionListener(_ -> cancel_reservation());
+        cancel_event_button.addActionListener(_ -> cancel_event());
 
         main_frame.setVisible(true);
     }
