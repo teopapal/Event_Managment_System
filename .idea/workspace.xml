@@ -4,27 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c1d0e796-8459-497d-a347-29bdce01b5dc" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/HY-360_project.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/jarRepositories.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/mysql_connector_j_9_1_0.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sqldialects.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/DBProject/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/DBProject/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/DBProject/data/DBManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/DBProject/data/DBManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/DBProject/gui/Gui_hub.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/DBProject/gui/Gui_hub.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/DBProject/gui/client/client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/DBProject/gui/customer/customer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/DBProject/gui/event/event.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/DBProject/gui/event/event.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/DBProject/gui/records/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/DBProject/gui/records/Customer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/DBProject/gui/records/Event.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/DBProject/gui/records/Event.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/DBProject/gui/records/Event_type.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/DBProject/gui/event/Event_type.java" afterDir="false" />
-    </list>
+    <list default="true" id="c1d0e796-8459-497d-a347-29bdce01b5dc" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -53,35 +33,35 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.GUI.executor": "Run",
-    "Application.Project.executor": "Run",
-    "Application.gui.executor": "Run",
-    "Maven.DBProject [clean,install].executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "deletionFromPopupRequiresConfirmation": "false",
-    "git-widget-placeholder": "main",
-    "ignore.preview.features.used": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/Teo/Desktop/sxoli/HY-360/HY-360_project",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Project",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.GUI.executor&quot;: &quot;Run&quot;,
+    &quot;Application.Project.executor&quot;: &quot;Run&quot;,
+    &quot;Application.gui.executor&quot;: &quot;Run&quot;,
+    &quot;Maven.DBProject [clean,install].executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;deletionFromPopupRequiresConfirmation&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;ignore.preview.features.used&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Teo/Desktop/sxoli/HY-360/HY-360_project&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "DatabaseDriversLRU": [
-      "mysql"
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;mysql&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RunManager">
     <configuration name="Project" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="com.DBProject.Main" />
@@ -123,6 +103,7 @@
       <workItem from="1733102862138" duration="177000" />
       <workItem from="1733103045940" duration="65000" />
       <workItem from="1733103124738" duration="6935000" />
+      <workItem from="1733154094832" duration="96000" />
     </task>
     <servers />
   </component>
