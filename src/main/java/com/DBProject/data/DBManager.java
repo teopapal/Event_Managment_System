@@ -152,10 +152,11 @@ public class DBManager {
 
     }*/
 
-    public static void showAvailableTickets(Ticket tickets) {
+    public static HashMap<Integer, HashMap<String, Object>> showAvailableTickets(Ticket tickets) {
+        HashMap<Integer, HashMap<String, Object>> availableTickets = new HashMap<>();
         if(tickets.event_name() == null || tickets.event_name().isEmpty() || tickets.seat_type() == null) {
             System.out.println("Event name and seat type cannot be empty.");
-            return;
+            return availableTickets;
         }
 
         String query = "SELECT t.ticket_id, price, t.availability " +
@@ -168,45 +169,44 @@ public class DBManager {
             stmt.setString(2, tickets.seat_type().toString());
             ResultSet rs = stmt.executeQuery();
 
-            boolean ticketsFound = false;
             while(rs.next()) {
-                ticketsFound = true;
                 int ticketId = rs.getInt("ticket_id");
                 double price = rs.getDouble("price");
                 int availability = rs.getInt("availability");
-                System.out.println("Ticket ID: " + ticketId + ", Price: " + price + ", Availability: " + availability);
+                HashMap<String, Object> ticketDetails = new HashMap<>();
+                ticketDetails.put("price", price);
+                ticketDetails.put("availability", availability);
+                availableTickets.put(ticketId, ticketDetails);
             }
 
-            if(!ticketsFound) {
+            if(availableTickets.isEmpty()) {
                 System.out.println("No tickets found for the event: " + tickets.event_name() + " with seat type: " + tickets.seat_type() + ".");
             }
         } catch (SQLException e) {
             System.out.println("Error fetching available tickets: " + e.getMessage() + ".");
         }
+        return availableTickets;
     }
 
-    // Method to add a new ticket
     public static boolean addTickets(int event_id, Enum<Seat_type> seat_type, Double price, int availability) {
 
-        // SQL query to insert a new event
         String insertQuery = "INSERT INTO Tickets (event_id, seat_type, price, availability) VALUES (?, ?, ?, ?)";
 
         try (PreparedStatement insertEvent = con.prepareStatement(insertQuery)) {
-            // Set parameters for the SQL query
             insertEvent.setInt(1, event_id);
             insertEvent.setString(2, seat_type.toString());
             insertEvent.setDouble(3, price);
             insertEvent.setInt(4, availability);
 
-            // Execute the insert query
             insertEvent.executeUpdate();
-            System.out.println("Ticket created successfully!"); // Inform the user about successful ticket creation
-            return true; // Return true to indicate success
-        } catch (SQLException e) {
+            System.out.println("Ticket created successfully!");
+            return true;
+        }
+        catch (SQLException e) {
             System.out.println(e.getMessage());
         }
 
-        return false; // Return false if there was an error during the insert
+        return false;
     }
 
     // Method to add a new reservation
