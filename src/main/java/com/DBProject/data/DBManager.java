@@ -1,7 +1,10 @@
 package com.DBProject.data;
 
+import com.DBProject.gui.enums.Seat_type;
 import com.DBProject.gui.records.Customer;
 import com.DBProject.gui.records.Event;
+import com.DBProject.gui.records.Ticket;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,7 +18,7 @@ public class DBManager {
                 "name VARCHAR(255) NOT NULL," +
                 "event_date DATE NOT NULL," +
                 "event_time TIME NOT NULL," +
-                "event_type ENUM('Concert', 'Theater', 'Other') NOT NULL," +
+                "event_type ENUM('CONCERT','SPORTS','THEATER','SEMINAR','CONFERENCE','MEETING','OTHER') NOT NULL," +
                 "capacity INT NOT NULL" +
                 ");";
 
@@ -32,7 +35,7 @@ public class DBManager {
                 "CREATE TABLE IF NOT EXISTS Tickets (" +
                         "ticket_id INT AUTO_INCREMENT PRIMARY KEY," +
                         "event_id INT NOT NULL," +
-                        "seat_type ENUM('VIP', 'General Admission', 'Other') NOT NULL," +
+                        "seat_type ENUM('VIP', 'Regular', 'Student', 'Other') NOT NULL," +
                         "price DECIMAL(10, 2) NOT NULL," +
                         "availability INT NOT NULL," +
                         "FOREIGN KEY (event_id) REFERENCES Events(event_id) ON DELETE CASCADE" +
@@ -149,8 +152,8 @@ public class DBManager {
 
     }*/
 
-    public static void showAvailableTickets(String eventName, String seatType) {
-        if(eventName == null || eventName.isEmpty() || seatType == null || seatType.isEmpty()) {
+    public static void showAvailableTickets(Ticket tickets) {
+        if(tickets.event_name() == null || tickets.event_name().isEmpty() || tickets.seat_type() == null) {
             System.out.println("Event name and seat type cannot be empty.");
             return;
         }
@@ -161,8 +164,8 @@ public class DBManager {
                 "WHERE e.name = ? AND t.seat_type = ?";
 
         try(PreparedStatement stmt = con.prepareStatement(query)) {
-            stmt.setString(1, eventName);
-            stmt.setString(2, seatType);
+            stmt.setString(1, tickets.event_name());
+            stmt.setString(2, tickets.seat_type().toString());
             ResultSet rs = stmt.executeQuery();
 
             boolean ticketsFound = false;
@@ -175,7 +178,7 @@ public class DBManager {
             }
 
             if(!ticketsFound) {
-                System.out.println("No tickets found for the event: " + eventName + " with seat type: " + seatType + ".");
+                System.out.println("No tickets found for the event: " + tickets.event_name() + " with seat type: " + tickets.seat_type() + ".");
             }
         } catch (SQLException e) {
             System.out.println("Error fetching available tickets: " + e.getMessage() + ".");
@@ -183,10 +186,7 @@ public class DBManager {
     }
 
     // Method to add a new ticket
-    public static boolean addTickets(int event_id, String seat_type, Double price, int availability) {
-        if (seat_type.isEmpty()) {
-            return false; // Validation check for empty fields or invalid capacity
-        }
+    public static boolean addTickets(int event_id, Enum<Seat_type> seat_type, Double price, int availability) {
 
         // SQL query to insert a new event
         String insertQuery = "INSERT INTO Tickets (event_id, seat_type, price, availability) VALUES (?, ?, ?, ?)";
@@ -194,7 +194,7 @@ public class DBManager {
         try (PreparedStatement insertEvent = con.prepareStatement(insertQuery)) {
             // Set parameters for the SQL query
             insertEvent.setInt(1, event_id);
-            insertEvent.setString(2, seat_type);
+            insertEvent.setString(2, seat_type.toString());
             insertEvent.setDouble(3, price);
             insertEvent.setInt(4, availability);
 

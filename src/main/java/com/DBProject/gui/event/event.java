@@ -1,6 +1,7 @@
 package com.DBProject.gui.event;
 
 import com.DBProject.data.DBManager;
+import com.DBProject.gui.enums.Event_type;
 import com.DBProject.gui.records.Event;
 
 import javax.swing.*;

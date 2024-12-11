@@ -1,6 +1,12 @@
 package com.DBProject.gui.tickets;
 
+import com.DBProject.data.DBManager;
+import com.DBProject.gui.enums.Event_type;
+import com.DBProject.gui.enums.Seat_type;
+import com.DBProject.gui.records.Ticket;
+
 import javax.swing.*;
+import java.awt.*;
 
 public class tickets {
     public static void show_available_tickets() {
@@ -14,5 +20,63 @@ public class tickets {
         title.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         frame.add(title);
 
+
+        JPanel reservation_panel = new JPanel(new GridBagLayout());
+        reservation_panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.insets = new Insets(2, 2, 2, 2);
+
+
+        JLabel event_name_label = new JLabel("Event Name:");
+        JTextField event_name = new JTextField();
+
+        JLabel seat_type_label = new JLabel("Event Type:");
+        JComboBox<Seat_type> seat_type_box = new JComboBox<>(Seat_type.values());
+        seat_type_box.addActionListener(_ -> seat_type_box.getSelectedItem());
+
+
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        reservation_panel.add(event_name_label, gbc);
+        gbc.gridx = 1;
+        reservation_panel.add(event_name, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        reservation_panel.add(seat_type_label, gbc);
+        gbc.gridx = 1;
+        reservation_panel.add(seat_type_box, gbc);
+
+
+        frame.add(reservation_panel, BorderLayout.CENTER);
+
+        JPanel bottom_panel = new JPanel(new BorderLayout());
+        JButton submit_button = new JButton("Search Tickets");
+        JLabel message = new JLabel("", SwingConstants.CENTER);
+
+        bottom_panel.add(submit_button, BorderLayout.CENTER);
+        bottom_panel.add(message, BorderLayout.SOUTH);
+
+        frame.add(bottom_panel, BorderLayout.SOUTH);
+
+
+        submit_button.addActionListener(_ -> {
+            if (event_name.getText().isEmpty()) {
+                message.setText("All fields are required!");
+                message.setForeground(Color.RED);
+            } else {
+                message.setText("Available tickets:");
+                message.setForeground(Color.GREEN);
+
+                Ticket tickets = new Ticket(event_name.getText(), (Seat_type) seat_type_box.getSelectedItem());
+
+                DBManager.showAvailableTickets(tickets);
+                frame.dispose();
+            }
+        });
+
+
+        frame.setVisible(true);
     }
 }

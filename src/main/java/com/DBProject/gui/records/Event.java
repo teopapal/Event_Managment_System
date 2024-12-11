@@ -1,7 +1,6 @@
 package com.DBProject.gui.records;
 
-import com.DBProject.gui.event.Event_type;
-
+import com.DBProject.gui.enums.Event_type;
 import java.sql.Date;
 import java.sql.Time;
 

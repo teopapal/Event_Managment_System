@@ -5,22 +5,23 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c1d0e796-8459-497d-a347-29bdce01b5dc" name="Changes" comment="Improve error logging in DBManager by removing stack traces">
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/DBProject/com/DBProject/gui/enums/Seat_type.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/DBProject/gui/enums/Seat_type.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/DBProject/gui/records/Ticket.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Project.iml" beforeDir="false" afterPath="$PROJECT_DIR$/Project.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Project/com/DBProject/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Project/com/DBProject/Main.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Project/com/DBProject/data/DBManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Project/com/DBProject/data/DBManager.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Project/com/DBProject/gui/Gui_hub.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Project/com/DBProject/gui/Gui_hub.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Project/com/DBProject/gui/client/client.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Project/com/DBProject/gui/event/event.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Project/com/DBProject/gui/event/event.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Project/com/DBProject/gui/records/Client.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Project/com/DBProject/gui/records/Event.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Project/com/DBProject/gui/records/Event.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Project/com/DBProject/gui/records/Event_type.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/DBProject/com/DBProject/Main.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/DBProject/com/DBProject/data/DBManager.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/DBProject/com/DBProject/gui/event/Event_type.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/DBProject/com/DBProject/gui/event/event.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/DBProject/com/DBProject/gui/event/event.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/DBProject/com/DBProject/gui/records/Event.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/DBProject/com/DBProject/gui/reservation/reservation.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/DBProject/com/DBProject/gui/tickets/tickets.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/DBProject/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/DBProject/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/DBProject/data/DBManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/DBProject/data/DBManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/DBProject/gui/event/Event_type.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/DBProject/gui/enums/Event_type.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/DBProject/gui/event/event.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/DBProject/gui/event/event.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/DBProject/gui/records/Event.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/DBProject/gui/records/Event.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/DBProject/gui/reservation/reservation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/DBProject/gui/reservation/reservation.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/DBProject/gui/tickets/tickets.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/DBProject/gui/tickets/tickets.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -39,18 +40,18 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "JohnProto"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;JohnProto&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/teopapal/HY-360_project.git",
-    "accountId": "77a97adf-51b0-474a-a234-b142907b55fa"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/teopapal/HY-360_project.git&quot;,
+    &quot;accountId&quot;: &quot;77a97adf-51b0-474a-a234-b142907b55fa&quot;
   }
-}]]></component>
+}</component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 8
 }</component>
@@ -62,42 +63,47 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.GUI.executor": "Run",
-    "Application.Project.executor": "Run",
-    "Application.gui.executor": "Run",
-    "Maven.DBProject [clean,install].executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "deletionFromPopupRequiresConfirmation": "false",
-    "git-widget-placeholder": "main",
-    "ignore.preview.features.used": "true",
-    "ignore.virus.scanning.warn.message": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/Teo/Desktop/sxoli/HY-360/HY-360_project",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Project",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.GUI.executor&quot;: &quot;Run&quot;,
+    &quot;Application.Project.executor&quot;: &quot;Run&quot;,
+    &quot;Application.gui.executor&quot;: &quot;Run&quot;,
+    &quot;Maven.DBProject [clean,install].executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;deletionFromPopupRequiresConfirmation&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;ignore.preview.features.used&quot;: &quot;true&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Teo/Desktop/sxoli/HY-360/HY-360_project&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "DatabaseDriversLRU": [
-      "mysql"
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;mysql&quot;
     ]
   }
-}]]></component>
+}</component>
+  <component name="RecentsManager">
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="com.DBProject.gui.enums" />
+    </key>
+  </component>
   <component name="RunManager">
     <configuration name="Project" type="Application" factoryName="Application">
-      <option name="ALTERNATIVE_JRE_PATH" value="23" />
+      <option name="ALTERNATIVE_JRE_PATH" value="openjdk-23" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
       <option name="MAIN_CLASS_NAME" value="com.DBProject.Main" />
-      <module name="Project" />
+      <module name="DBProject" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -137,6 +143,7 @@
       <workItem from="1733103124738" duration="6935000" />
       <workItem from="1733154094832" duration="96000" />
       <workItem from="1733924905922" duration="3056000" />
+      <workItem from="1733930516564" duration="4155000" />
     </task>
     <servers />
   </component>
