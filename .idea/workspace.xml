@@ -6,7 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="c1d0e796-8459-497d-a347-29bdce01b5dc" name="Changes" comment="Improve error logging in DBManager by removing stack traces">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/DBProject/data/DBManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/DBProject/data/DBManager.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -128,7 +127,7 @@
       <workItem from="1733103124738" duration="6935000" />
       <workItem from="1733154094832" duration="96000" />
       <workItem from="1733924905922" duration="3056000" />
-      <workItem from="1733930516564" duration="5810000" />
+      <workItem from="1733930516564" duration="7217000" />
     </task>
     <servers />
   </component>
