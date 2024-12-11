@@ -2,12 +2,9 @@ package com.DBProject.data;
 
 import com.DBProject.gui.records.Customer;
 import com.DBProject.gui.records.Event;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
-
-
 
 public class DBManager {
     private static Connection con;
@@ -62,8 +59,7 @@ public class DBManager {
             int port = 3306;
             String username = "root";
             String password = "";
-            con = DriverManager.getConnection(
-                    url + ":" + port + "/" + databaseName + "?characterEncoding=UTF-8", username, password);
+            con = DriverManager.getConnection(url + ":" + port + "/" + databaseName + "?characterEncoding=UTF-8", username, password);
             Statement statement = con.createStatement();
 
             // Execute database and table creation queries
@@ -78,9 +74,9 @@ public class DBManager {
         }
     }
 
-    public static boolean registerCustomer(Customer client) {
+    public static void registerCustomer(Customer client) {
         if (client.first_name().isEmpty() || client.last_name().isEmpty()  || client.email().isEmpty() || client.credit_card_info().isEmpty()) {
-            return false; // Validation check for empty fields
+            return; // Validation check for empty fields
         }
 
         // SQL query to check if the email already exists in the database
@@ -95,11 +91,11 @@ public class DBManager {
 
             if (resultSet.next() && resultSet.getInt(1) > 0) {
                 System.out.println("Email already exists!"); // Inform the user about the duplicate email
-                return false; // Return false to indicate failure (duplicate email)
+                return; // Return false to indicate failure (duplicate email)
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
-            return false; // Return false if there was an error executing the check query
+            return; // Return false if there was an error executing the check query
         }
 
 
@@ -116,18 +112,16 @@ public class DBManager {
             // Execute the insertion query
             insertCustomer.executeUpdate();
             System.out.println("Customer registered successfully!"); // Inform the user about successful registration
-            return true; // Return true to indicate success
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
 
-        return false; // Return false if there was an error during the insert
     }
 
     // Method to add a new event
-    public static boolean createEvent(Event event) {
+    public static void createEvent(Event event) {
         if (event.name().isEmpty() || event.date() == null  || event.time() == null || event.capacity() <= 0) {
-            return false; // Validation check for empty fields or invalid capacity
+            return; // Validation check for empty fields or invalid capacity
         }
 
         // SQL query to insert a new event
@@ -145,12 +139,47 @@ public class DBManager {
             // Execute the insert query
             insertEvent.executeUpdate();
             System.out.println("Event created successfully!"); // Inform the user about successful event creation
-            return true; // Return true to indicate success
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
 
-        return false; // Return false if there was an error during the insert
+    }
+
+    /*public static void getEventName() {
+
+    }*/
+
+    public static void showAvailableTickets(String eventName, String seatType) {
+        if(eventName == null || eventName.isEmpty() || seatType == null || seatType.isEmpty()) {
+            System.out.println("Event name and seat type cannot be empty.");
+            return;
+        }
+
+        String query = "SELECT t.ticket_id, t_price, t.availability " +
+                "FROM Tickets t " +
+                "INNER JOIN Events e ON t.event_id = e.event_id " +
+                "WHERE e.name = ? AND t.seat_type = ?";
+
+        try(PreparedStatement stmt = con.prepareStatement(query)) {
+            stmt.setString(1, eventName);
+            stmt.setString(2, seatType);
+            ResultSet rs = stmt.executeQuery();
+
+            boolean ticketsFound = false;
+            while(rs.next()) {
+                ticketsFound = true;
+                int ticketId = rs.getInt("ticket_id");
+                double price = rs.getDouble("price");
+                int availability = rs.getInt("availability");
+                System.out.println("Ticket ID: " + ticketId + ", Price: " + price + ", Availability: " + availability);
+            }
+
+            if(!ticketsFound) {
+                System.out.println("No tickets found for the event: " + eventName + " with seat type: " + seatType + ".");
+            }
+        } catch (SQLException e) {
+            System.out.println("Error fetching available tickets: " + e.getMessage() + ".");
+        }
     }
 
     // Method to add a new ticket
@@ -189,9 +218,9 @@ public class DBManager {
 
         try {
             // Check ticket availability and get the ticket price
-            int ticketId = 0;
-            int currentAvailability = 0;
-            double ticketPrice = 0.0;
+            int ticketId;
+            int currentAvailability;
+            double ticketPrice;
 
             // Check ticket availability
             try (PreparedStatement checkStmt = con.prepareStatement(checkAvailabilityQuery)) {
@@ -265,9 +294,9 @@ public class DBManager {
         try {
             // Get reservation details (event_id, seat_type, number_of_tickets, payment_amount)
             int event_id = 0;
-            int ticketId = 0;
-            int number_of_tickets = 0;
-            double payment_amount = 0.0;
+            int ticketId;
+            int number_of_tickets;
+            double payment_amount;
 
             try (PreparedStatement getReservationStmt = con.prepareStatement(getReservationDetailsQuery)) {
                 getReservationStmt.setInt(1, reservation_id);

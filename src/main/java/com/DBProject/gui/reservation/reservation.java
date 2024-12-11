@@ -1,16 +1,7 @@
 package com.DBProject.gui.reservation;
 
-import com.DBProject.data.DBManager;
-import com.DBProject.gui.event.Event_type;
-import com.DBProject.gui.records.Event;
-
 import javax.swing.*;
 import java.awt.*;
-import java.sql.Date;
-import java.sql.Time;
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 
 public class reservation {
     public static void cancel_reservation() {
