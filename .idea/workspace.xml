@@ -5,23 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c1d0e796-8459-497d-a347-29bdce01b5dc" name="Changes" comment="Improve error logging in DBManager by removing stack traces">
-      <change afterPath="$PROJECT_DIR$/out/production/DBProject/com/DBProject/gui/enums/Seat_type.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/DBProject/gui/enums/Seat_type.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/DBProject/gui/records/Ticket.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/DBProject/com/DBProject/Main.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/DBProject/com/DBProject/data/DBManager.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/DBProject/com/DBProject/gui/event/Event_type.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/DBProject/com/DBProject/gui/event/event.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/DBProject/com/DBProject/gui/event/event.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/DBProject/com/DBProject/gui/records/Event.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/DBProject/com/DBProject/gui/reservation/reservation.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/DBProject/com/DBProject/gui/tickets/tickets.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/DBProject/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/DBProject/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/DBProject/data/DBManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/DBProject/data/DBManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/DBProject/gui/event/Event_type.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/DBProject/gui/enums/Event_type.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/DBProject/gui/event/event.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/DBProject/gui/event/event.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/DBProject/gui/records/Event.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/DBProject/gui/records/Event.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/DBProject/gui/tickets/tickets.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/DBProject/gui/tickets/tickets.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -143,7 +128,7 @@
       <workItem from="1733103124738" duration="6935000" />
       <workItem from="1733154094832" duration="96000" />
       <workItem from="1733924905922" duration="3056000" />
-      <workItem from="1733930516564" duration="4155000" />
+      <workItem from="1733930516564" duration="5810000" />
     </task>
     <servers />
   </component>

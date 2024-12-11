@@ -20,7 +20,7 @@ public class DBManager {
                 "event_time TIME NOT NULL," +
                 "event_type ENUM('CONCERT','SPORTS','THEATER','SEMINAR','CONFERENCE','MEETING','OTHER') NOT NULL," +
                 "capacity INT NOT NULL" +
-                ");";
+        ");";
 
         String createCustomersTable =
                 "CREATE TABLE IF NOT EXISTS Customers (" +
@@ -158,7 +158,7 @@ public class DBManager {
             return;
         }
 
-        String query = "SELECT t.ticket_id, t_price, t.availability " +
+        String query = "SELECT t.ticket_id, price, t.availability " +
                 "FROM Tickets t " +
                 "INNER JOIN Events e ON t.event_id = e.event_id " +
                 "WHERE e.name = ? AND t.seat_type = ?";

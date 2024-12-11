@@ -17,6 +17,7 @@ public class Main {
         //DBManager.cancelReservation(1,true);
 
         DBManager.addTickets(1, Regular, 100.0, 100);
+        DBManager.addTickets(1, VIP, 200.0, 100);
 //        DBManager.addReservation(VIP, 2, 1, 50);
 //        DBManager.cancelReservation(1,true);
 
