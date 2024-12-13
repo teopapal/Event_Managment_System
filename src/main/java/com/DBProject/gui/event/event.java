@@ -117,6 +117,7 @@ public class event {
                     message.setForeground(Color.GREEN);
 
 
+
                     Timer timer = new Timer(1000, e -> panel_manager.get_card_layout().show(panel_manager.get_content_panel(), "main_panel"));
                     timer.setRepeats(false);
                     timer.start();
@@ -129,5 +130,75 @@ public class event {
 
         panel_manager.get_content_panel().add(create_event_panel, "create_event_panel");
         panel_manager.get_card_layout().show(panel_manager.get_content_panel(), "create_event_panel");
+    }
+
+    public static void cancel_event(PanelManager panel_manager) {
+        JPanel cancel_event_panel = new JPanel(new BorderLayout());
+
+        JPanel top_panel = new JPanel(new BorderLayout());
+        JButton back_button = new JButton("Back");
+        back_button.addActionListener(_ -> panel_manager.get_card_layout().show(panel_manager.get_content_panel(), "main_panel"));
+        top_panel.add(back_button, BorderLayout.WEST);
+
+        JLabel title = new JLabel("Cancel an Event", SwingConstants.CENTER);
+        title.setFont(new Font("Arial", Font.BOLD, 16));
+        top_panel.add(title, BorderLayout.CENTER);
+
+        cancel_event_panel.add(top_panel, BorderLayout.NORTH);
+
+        JPanel event_form = new JPanel(new GridBagLayout());
+        event_form.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.insets = new Insets(5, 5, 5, 5);
+
+        JLabel event_name_label = new JLabel("Event Name:");
+        JTextField event_name = new JTextField();
+        event_name.setPreferredSize(new Dimension(100, 20));
+
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        event_form.add(event_name_label, gbc);
+        gbc.gridx = 1;
+        event_form.add(event_name, gbc);
+
+        cancel_event_panel.add(event_form, BorderLayout.CENTER);
+
+        JPanel bottom_panel = new JPanel(new BorderLayout());
+        JButton submit_button = new JButton("Cancel Event");
+        JLabel message = new JLabel("", SwingConstants.CENTER);
+
+        bottom_panel.add(submit_button, BorderLayout.CENTER);
+        bottom_panel.add(message, BorderLayout.SOUTH);
+
+        cancel_event_panel.add(bottom_panel, BorderLayout.SOUTH);
+
+        submit_button.addActionListener(_ -> {
+            if (event_name.getText().isEmpty()) {
+                message.setText("Event ID is required!");
+                message.setForeground(Color.RED);
+            } else {
+                try {
+                    if (DBManager.cancelEvent(event_name.getText())) {
+                        message.setText("Event created successfully!");
+                        message.setForeground(Color.GREEN);
+                    } else {
+                        message.setText("Event creation failed!");
+                        message.setForeground(Color.RED);
+                    }
+
+
+                    Timer timer = new Timer(1000, _ -> panel_manager.get_card_layout().show(panel_manager.get_content_panel(), "main_panel"));
+                    timer.setRepeats(false);
+                    timer.start();
+                } catch (Exception ex) {
+                    message.setText("Invalid input! Please check the fields.");
+                    message.setForeground(Color.RED);
+                }
+            }
+        });
+
+        panel_manager.get_content_panel().add(cancel_event_panel, "cancel_event_panel");
+        panel_manager.get_card_layout().show(panel_manager.get_content_panel(), "cancel_event_panel");
     }
 }

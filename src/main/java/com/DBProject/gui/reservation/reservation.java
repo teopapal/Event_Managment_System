@@ -77,6 +77,7 @@ public class reservation {
                 HashMap<Integer, HashMap<String, Object>> tickets_map = DBManager.showAvailableTickets(tickets);
 
                 if (tickets_map.isEmpty()) {
+                    message.setForeground(Color.RED);
                     message.setText("No available tickets found!");
                 } else {
                     message.setText("Available tickets fetched successfully!");

@@ -6,9 +6,11 @@ import javax.swing.*;
 import java.awt.*;
 
 import static com.DBProject.gui.customer.customer.registration_form;
+import static com.DBProject.gui.event.event.cancel_event;
 import static com.DBProject.gui.event.event.create_event_form;
 import static com.DBProject.gui.reservation.reservation.add_reservation;
 import static com.DBProject.gui.reservation.reservation.cancel_reservation;
+import static com.DBProject.gui.sql_input.sql_input.create_sql_input;
 
 
 public class Gui_hub {
@@ -55,6 +57,9 @@ public class Gui_hub {
         JButton cancel_event_button = new JButton("Cancel Event");
         cancel_event_button.setPreferredSize(new Dimension(200, 40));
 
+        JButton Sql_button = new JButton("Write SQL");
+        Sql_button.setPreferredSize(new Dimension(200, 40));
+
         gbc.gridx = 0;
         gbc.gridy = 0;
         button_panel.add(register_button, gbc);
@@ -75,13 +80,19 @@ public class Gui_hub {
         gbc.gridy = 2;
         button_panel.add(cancel_event_button, gbc);
 
+        gbc.gridx = 1;
+        gbc.gridy = 2;
+        button_panel.add(Sql_button, gbc);
+
         panel.add(button_panel, BorderLayout.CENTER);
 
         register_button.addActionListener(_ -> registration_form(panel_manager));
         create_event_button.addActionListener(_ -> create_event_form(panel_manager));
         add_reservation_button.addActionListener(_ -> add_reservation(panel_manager));
         cancel_reservation_button.addActionListener(_ -> cancel_reservation(panel_manager));
-//        cancel_event_button.addActionListener(_ -> cancel_reservation(panel_manager));
+        cancel_event_button.addActionListener(_ -> cancel_event(panel_manager));
+        Sql_button.addActionListener(_ -> create_sql_input(panel_manager));
+
         return panel;
     }
 
