@@ -1,30 +1,26 @@
 package com.DBProject.gui.customer;
 
 import com.DBProject.data.DBManager;
-import com.DBProject.gui.enums.Event_type;
+import com.DBProject.gui.PanelManager.PanelManager;
 import com.DBProject.gui.records.Customer;
-import com.DBProject.gui.records.Event;
 
 import javax.swing.*;
 import java.awt.*;
-import java.sql.Date;
-import java.sql.Time;
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 
 public class customer {
-    public static void registration_form() {
-        JFrame frame = new JFrame("Create a User");
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        frame.setSize(400, 300);
-        frame.setLayout(new BorderLayout());
+    public static void registration_form(PanelManager panel_manager) {
+        JPanel registration_panel = new JPanel(new BorderLayout());
+
+        JPanel top_panel = new JPanel(new BorderLayout());
+        JButton back_button = new JButton("Back");
+        back_button.addActionListener(_ -> panel_manager.get_card_layout().show(panel_manager.get_content_panel(), "main_panel"));
+        top_panel.add(back_button, BorderLayout.WEST);
 
         JLabel title = new JLabel("User Registration", SwingConstants.CENTER);
         title.setFont(new Font("Arial", Font.BOLD, 16));
-        title.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        frame.add(title, BorderLayout.NORTH);
+        top_panel.add(title, BorderLayout.CENTER);
+
+        registration_panel.add(top_panel, BorderLayout.NORTH);
 
         JPanel user_form = new JPanel(new GridBagLayout());
         user_form.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -73,7 +69,7 @@ public class customer {
         gbc.gridx = 1;
         user_form.add(credit_card, gbc);
 
-        frame.add(user_form, BorderLayout.CENTER);
+        registration_panel.add(user_form, BorderLayout.CENTER);
 
         JPanel bottom_panel = new JPanel(new BorderLayout());
         JButton submit_button = new JButton("Register");
@@ -82,9 +78,8 @@ public class customer {
         bottom_panel.add(submit_button, BorderLayout.CENTER);
         bottom_panel.add(message, BorderLayout.SOUTH);
 
-        frame.add(bottom_panel, BorderLayout.SOUTH);
+        registration_panel.add(bottom_panel, BorderLayout.SOUTH);
 
-        // ACTION LISTENER
         submit_button.addActionListener(_ -> {
             if (first_name.getText().isEmpty() || last_name.getText().isEmpty() || email.getText().isEmpty() || credit_card.getText().isEmpty()) {
                 message.setText("All fields are required!");
@@ -102,11 +97,16 @@ public class customer {
                 Customer customer = new Customer(first_name.getText(), last_name.getText(), email.getText(), credit_card.getText());
 
                 DBManager.registerCustomer(customer);
-                frame.dispose();
 
+                Timer timer = new Timer(1000, _ -> {
+                    panel_manager.get_card_layout().show(panel_manager.get_content_panel(), "main_panel");
+                });
+                timer.setRepeats(false);
+                timer.start();
             }
         });
 
-        frame.setVisible(true);
+        panel_manager.get_content_panel().add(registration_panel, "registration_panel");
+        panel_manager.get_card_layout().show(panel_manager.get_content_panel(), "registration_panel");
     }
 }

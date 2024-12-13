@@ -1,6 +1,7 @@
 package com.DBProject.gui.reservation;
 
 import com.DBProject.data.DBManager;
+import com.DBProject.gui.PanelManager.PanelManager;
 import com.DBProject.gui.enums.Seat_type;
 import com.DBProject.gui.records.Reservation;
 import com.DBProject.gui.records.Ticket;
@@ -12,43 +13,47 @@ import java.util.Map;
 
 public class reservation {
 
-    public static void add_reservation(){
-        JFrame frame = new JFrame("Add a Reservation");
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        frame.setSize(400, 300);
-        frame.setLayout(new BorderLayout());
+    public static void add_reservation(PanelManager panel_manager) {
+        JPanel reservation_panel = new JPanel(new BorderLayout());
+
+        JPanel top_panel = new JPanel(new BorderLayout());
+        JButton back_button = new JButton("Back");
+        back_button.addActionListener(_ -> panel_manager.get_card_layout().show(panel_manager.get_content_panel(), "main_panel"));
+        top_panel.add(back_button, BorderLayout.WEST);
 
         JLabel title = new JLabel("Add a Reservation", SwingConstants.CENTER);
         title.setFont(new Font("Arial", Font.BOLD, 16));
-        title.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        frame.add(title, BorderLayout.NORTH);
+        top_panel.add(title, BorderLayout.CENTER);
 
-        JPanel reservation_panel = new JPanel(new GridBagLayout());
-        reservation_panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        reservation_panel.add(top_panel, BorderLayout.NORTH);
+
+
+        JPanel form_panel = new JPanel(new GridBagLayout());
+        form_panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.insets = new Insets(2, 2, 2, 2);
+        gbc.insets = new Insets(5, 5, 5, 5);
 
         JLabel event_name_label = new JLabel("Event Name:");
         JTextField event_name = new JTextField();
 
         JLabel seat_type_label = new JLabel("Seat Type:");
         JComboBox<Seat_type> seat_type_box = new JComboBox<>(Seat_type.values());
-        seat_type_box.addActionListener(_ -> seat_type_box.getSelectedItem());
 
         gbc.gridx = 0;
         gbc.gridy = 0;
-        reservation_panel.add(event_name_label, gbc);
+        form_panel.add(event_name_label, gbc);
         gbc.gridx = 1;
-        reservation_panel.add(event_name, gbc);
+        form_panel.add(event_name, gbc);
 
         gbc.gridx = 0;
         gbc.gridy = 1;
-        reservation_panel.add(seat_type_label, gbc);
+        form_panel.add(seat_type_label, gbc);
         gbc.gridx = 1;
-        reservation_panel.add(seat_type_box, gbc);
+        form_panel.add(seat_type_box, gbc);
 
-        frame.add(reservation_panel, BorderLayout.CENTER);
+        reservation_panel.add(form_panel, BorderLayout.CENTER);
+
 
         JPanel bottom_panel = new JPanel(new BorderLayout());
         JButton submit_button = new JButton("Search Tickets");
@@ -57,7 +62,8 @@ public class reservation {
         bottom_panel.add(submit_button, BorderLayout.CENTER);
         bottom_panel.add(message, BorderLayout.SOUTH);
 
-        frame.add(bottom_panel, BorderLayout.SOUTH);
+        reservation_panel.add(bottom_panel, BorderLayout.SOUTH);
+
 
         submit_button.addActionListener(_ -> {
             if (event_name.getText().isEmpty()) {
@@ -68,21 +74,20 @@ public class reservation {
                 message.setForeground(Color.GREEN);
 
                 Ticket tickets = new Ticket(event_name.getText(), (Seat_type) seat_type_box.getSelectedItem());
-
                 HashMap<Integer, HashMap<String, Object>> tickets_map = DBManager.showAvailableTickets(tickets);
-                System.out.println(tickets_map);
 
                 if (tickets_map.isEmpty()) {
-                    JOptionPane.showMessageDialog(frame, "No tickets available!", "Information", JOptionPane.INFORMATION_MESSAGE);
+                    message.setText("No available tickets found!");
                 } else {
+                    message.setText("Available tickets fetched successfully!");
                     JFrame tickets_frame = new JFrame("Available Tickets");
                     tickets_frame.setSize(600, 400);
                     tickets_frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                     tickets_frame.setLayout(new BorderLayout());
 
                     String[] column_names = {"Ticket ID", "Seat Type", "Price"};
-
                     Object[][] table_data = new Object[tickets_map.size()][3];
+
                     int row = 0;
                     for (Map.Entry<Integer, HashMap<String, Object>> entry : tickets_map.entrySet()) {
                         table_data[row][0] = entry.getKey();
@@ -167,27 +172,30 @@ public class reservation {
             }
         });
 
-        frame.setVisible(true);
+        panel_manager.get_content_panel().add(reservation_panel, "add_reservation_panel");
+        panel_manager.get_card_layout().show(panel_manager.get_content_panel(), "add_reservation_panel");
     }
 
 
-    public static void cancel_reservation() {
-        JFrame frame = new JFrame("Cancel Reservation");
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        frame.setSize(400, 300);
-        frame.setLayout(new BorderLayout());
+    public static void cancel_reservation(PanelManager panel_manager) {
+        JPanel cancel_panel = new JPanel(new BorderLayout());
+
+        JPanel top_panel = new JPanel(new BorderLayout());
+        JButton back_button = new JButton("Back");
+        back_button.addActionListener(_ -> panel_manager.get_card_layout().show(panel_manager.get_content_panel(), "main_panel"));
+        top_panel.add(back_button, BorderLayout.WEST);
 
         JLabel title = new JLabel("Cancel Reservation", SwingConstants.CENTER);
         title.setFont(new Font("Arial", Font.BOLD, 16));
-        title.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        frame.add(title, BorderLayout.NORTH);
+        top_panel.add(title, BorderLayout.CENTER);
 
-        JPanel reservation_panel = new JPanel(new GridBagLayout());
-        reservation_panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        cancel_panel.add(top_panel, BorderLayout.NORTH);
+
+        JPanel form_panel = new JPanel(new GridBagLayout());
+        form_panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.insets = new Insets(4, 4, 4, 4);
-
+        gbc.insets = new Insets(5, 5, 5, 5);
 
         JLabel event_name_label = new JLabel("Event Name:");
         JTextField event_name = new JTextField();
@@ -197,29 +205,26 @@ public class reservation {
 
         JLabel seat_type_label = new JLabel("Seat Type:");
         JComboBox<Seat_type> seat_type_box = new JComboBox<>(Seat_type.values());
-        seat_type_box.addActionListener(_ -> seat_type_box.getSelectedItem());
-
 
         gbc.gridx = 0;
         gbc.gridy = 0;
-        reservation_panel.add(event_name_label, gbc);
+        form_panel.add(event_name_label, gbc);
         gbc.gridx = 1;
-        reservation_panel.add(event_name, gbc);
+        form_panel.add(event_name, gbc);
 
         gbc.gridx = 0;
         gbc.gridy = 1;
-        reservation_panel.add(customer_id_label, gbc);
+        form_panel.add(customer_id_label, gbc);
         gbc.gridx = 1;
-        reservation_panel.add(customer_id, gbc);
+        form_panel.add(customer_id, gbc);
 
         gbc.gridx = 0;
         gbc.gridy = 2;
-        reservation_panel.add(seat_type_label, gbc);
+        form_panel.add(seat_type_label, gbc);
         gbc.gridx = 1;
-        reservation_panel.add(seat_type_box, gbc);
+        form_panel.add(seat_type_box, gbc);
 
-
-        frame.add(reservation_panel, BorderLayout.CENTER);
+        cancel_panel.add(form_panel, BorderLayout.CENTER);
 
         JPanel bottom_panel = new JPanel(new BorderLayout());
         JButton submit_button = new JButton("Cancel Reservation");
@@ -228,8 +233,7 @@ public class reservation {
         bottom_panel.add(submit_button, BorderLayout.CENTER);
         bottom_panel.add(message, BorderLayout.SOUTH);
 
-        frame.add(bottom_panel, BorderLayout.SOUTH);
-
+        cancel_panel.add(bottom_panel, BorderLayout.SOUTH);
 
         submit_button.addActionListener(_ -> {
             if (event_name.getText().isEmpty() || customer_id.getText().isEmpty()) {
@@ -239,18 +243,31 @@ public class reservation {
                 message.setText("Reservation cancelled successfully!");
                 message.setForeground(Color.GREEN);
 
-                System.out.println("Reservation Details:");
-                System.out.println("Event ID: " + event_name.getText());
+                System.out.println("Cancel Reservation Details:");
+                System.out.println("Event Name: " + event_name.getText());
                 System.out.println("Customer ID: " + customer_id.getText());
                 System.out.println("Seat Type: " + seat_type_box.getSelectedItem());
 
-//                DBManager.cancelReservation(event_id.getText(), customer_id.getText(), seat_type.getText(), tickets.getText());
-                frame.dispose();
+                Reservation reservation = new Reservation((Seat_type) seat_type_box.getSelectedItem(), Integer.parseInt(customer_id.getText()), event_name.getText(), 0);
+                if (DBManager.cancelReservation(reservation)) {
+                    message.setText("Reservation cancelled successfully!");
+                } else {
+                    message.setText("Reservation not found!");
+                    message.setForeground(Color.RED);
+                }
+
+                Timer timer = new Timer(1000, _ -> {
+                    panel_manager.get_card_layout().show(panel_manager.get_content_panel(), "main_panel");
+                    message.setText("");
+                    event_name.setText("");
+                    customer_id.setText("");
+                });
+                timer.setRepeats(false);
+                timer.start();
             }
         });
 
-
-        frame.setVisible(true);
-
+        panel_manager.get_content_panel().add(cancel_panel, "cancel_reservation_panel");
+        panel_manager.get_card_layout().show(panel_manager.get_content_panel(), "cancel_reservation_panel");
     }
 }
