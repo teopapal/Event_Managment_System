@@ -5,10 +5,11 @@ import com.DBProject.gui.records.Customer;
 import com.DBProject.gui.records.Event;
 import com.DBProject.gui.records.Reservation;
 import com.DBProject.gui.records.Ticket;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.DBProject.gui.enums.Seat_type.*;
 
@@ -16,6 +17,11 @@ public class DBManager {
     private static Connection con;
 
     public static void initialize() {
+        String dropReservationsTable = "DROP TABLE IF EXISTS Reservations;";
+        String dropTicketsTable = "DROP TABLE IF EXISTS Tickets;";
+        String dropCustomersTable = "DROP TABLE IF EXISTS Customers;";
+        String dropEventsTable = "DROP TABLE IF EXISTS Events;";
+
         String createEventsTable = "CREATE TABLE IF NOT EXISTS events (" +
                 "event_id INT AUTO_INCREMENT PRIMARY KEY," +
                 "event_name VARCHAR(255) NOT NULL UNIQUE," +
@@ -24,7 +30,7 @@ public class DBManager {
                 "event_type ENUM('CONCERT','SPORTS','THEATER','SEMINAR','CONFERENCE','MEETING','OTHER') NOT NULL," +
                 "availability INT NOT NULL," +
                 "capacity INT NOT NULL" +
-        ");";
+                ");";
 
         String createCustomersTable =
                 "CREATE TABLE IF NOT EXISTS Customers (" +
@@ -69,13 +75,17 @@ public class DBManager {
             con = DriverManager.getConnection(url + ":" + port + "/" + databaseName + "?characterEncoding=UTF-8", username, password);
             Statement statement = con.createStatement();
 
-            // Execute database and table creation queries
+            statement.execute(dropReservationsTable);
+            statement.execute(dropTicketsTable);
+            statement.execute(dropCustomersTable);
+            statement.execute(dropEventsTable);
+
             statement.execute(createEventsTable);
             statement.execute(createCustomersTable);
             statement.execute(createTicketsTable);
             statement.execute(createReservationsTable);
 
-            System.out.println("Database and tables initialized successfully.");
+            System.out.println("Database and tables initialized successfully, with empty tables.");
         } catch (Exception e) {
             System.out.println("Failed to initialize the database." + e);
         }
@@ -83,60 +93,48 @@ public class DBManager {
 
     public static void registerCustomer(Customer client) {
         if (client.first_name().isEmpty() || client.last_name().isEmpty()  || client.email().isEmpty() || client.credit_card_info().isEmpty()) {
-            return; // Validation check for empty fields
+            return;
         }
 
-        // SQL query to check if the email already exists in the database
         String checkEmailQuery = "SELECT COUNT(*) FROM Customers WHERE email = ?";
 
         try (PreparedStatement checkStmt = con.prepareStatement(checkEmailQuery)) {
-            // Set the email parameter
             checkStmt.setString(1, client.email());
-
-            // Execute the query to check if the email already exists
             ResultSet resultSet = checkStmt.executeQuery();
 
             if (resultSet.next() && resultSet.getInt(1) > 0) {
-                System.out.println("Email already exists!"); // Inform the user about the duplicate email
-                return; // Return false to indicate failure (duplicate email)
+                System.out.println("Email already exists!");
+                return;
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
-            return; // Return false if there was an error executing the check query
+            return;
         }
 
-
-        // Proceed with the insertion since the email is unique
         String insertQuery = "INSERT INTO Customers (firstName, lastName, email, credit_card_details) VALUES (?, ?, ?, ?)";
 
         try (PreparedStatement insertCustomer = con.prepareStatement(insertQuery)) {
-            // Set the customer details in the prepared statement
             insertCustomer.setString(1, client.first_name());
             insertCustomer.setString(2, client.last_name());
             insertCustomer.setString(3, client.email());
             insertCustomer.setString(4, client.credit_card_info());
 
-            // Execute the insertion query
             insertCustomer.executeUpdate();
-            System.out.println("Customer registered successfully!"); // Inform the user about successful registration
+            System.out.println("Customer registered successfully!");
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
 
     }
 
-    // Method to add a new event
     public static void createEvent(Event event) {
         if (event.name().isEmpty() || event.date() == null  || event.time() == null || event.capacity() <= 0) {
-            return; // Validation check for empty fields or invalid capacity
+            return;
         }
 
-        // SQL query to insert a new event
         String insertQuery = "INSERT INTO Events (event_name, event_type, event_date, event_time, availability, capacity) VALUES (?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement insertEvent = con.prepareStatement(insertQuery)) {
-
-            // Set parameters for the SQL query
             insertEvent.setString(1, event.name());
             insertEvent.setString(2, event.type().toString());
             insertEvent.setDate(3, event.date());
@@ -144,9 +142,8 @@ public class DBManager {
             insertEvent.setInt(5, event.capacity());
             insertEvent.setInt(6, event.capacity());
 
-            // Execute the insert query
             insertEvent.executeUpdate();
-            System.out.println("Event created successfully!"); // Inform the user about successful event creation
+            System.out.println("Event created successfully!");
 
 
             for(int i=0; i<=4; i++) {
@@ -157,7 +154,6 @@ public class DBManager {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-
     }
 
     public static HashMap<Integer, HashMap<String, Object>> showAvailableTickets(Ticket tickets) {
@@ -214,18 +210,18 @@ public class DBManager {
 
     }
 
-    public static boolean addReservation(Reservation reservation) {
+    public static void addReservation(Reservation reservation) {
         String checkEventAvailabilityQuery = "SELECT availability FROM Events WHERE event_name = ?";
         String checkTicketsQuery = "SELECT ticket_id, price FROM Tickets WHERE event_name = ? AND seat_type = ? AND reserved = FALSE LIMIT ?";
         String updateEventAvailabilityQuery = "UPDATE Events SET availability = availability - ? WHERE event_name = ?";
         String insertReservationQuery = "INSERT INTO Reservations (customer_id, event_name, ticket_id, number_of_tickets, payment_amount) VALUES (?, ?, ?, ?, ?)";
         String updateTicketReservedStatusQuery = "UPDATE Tickets SET reserved = TRUE WHERE ticket_id = ?";
+        double totalPaymentAmount = 0;
 
         try {
             int eventAvailability;
             ArrayList<Integer> ticketIds = new ArrayList<>();
             double ticketPrice;
-            double totalPaymentAmount = 0;
 
             try (PreparedStatement eventStmt = con.prepareStatement(checkEventAvailabilityQuery)) {
                 eventStmt.setString(1, reservation.event_name());
@@ -234,12 +230,12 @@ public class DBManager {
                     eventAvailability = rs.getInt("availability");
                     if (eventAvailability < reservation.number_of_tickets()) {
                         System.out.println("Not enough tickets available for this event.");
-                        return false;
+                        return;
                     }
                 }
                 else {
                     System.out.println("Event not found.");
-                    return false;
+                    return;
                 }
             }
 
@@ -259,7 +255,7 @@ public class DBManager {
 
             if (ticketIds.size() < reservation.number_of_tickets()) {
                 System.out.println("Not enough tickets available for the requested seat type.");
-                return false;
+                return;
             }
 
             try (PreparedStatement reservationStmt = con.prepareStatement(insertReservationQuery)) {
@@ -289,82 +285,110 @@ public class DBManager {
                 int rowsUpdated = updateEventStmt.executeUpdate();
                 if (rowsUpdated == 0) {
                     System.out.println("Failed to update event availability.");
-                    return false;
+                    return;
                 }
             }
 
-            System.out.println("Reservation(s) created, tickets marked as reserved, and event availability updated successfully!");
-            return true;
+            System.out.println("User" + reservation.customer_id() + " charged " + totalPaymentAmount);
 
         } catch (SQLException e) {
             System.out.println("Error while creating reservation or updating availability: " + e.getMessage());
-            return false;
         }
     }
 
-    public static boolean cancelReservation(int reservation_id, boolean applyCancellationFee) {
-
-        String getReservationDetailsQuery = "SELECT event_id, ticket_id, number_of_tickets, payment_amount FROM Reservations WHERE reservation_id = ?";
-        String updateTicketAvailabilityQuery = "UPDATE Tickets SET availability = availability + ? WHERE ticket_id = ?";
-        String deleteReservationQuery = "DELETE FROM Reservations WHERE reservation_id = ?";
+    public static boolean cancelReservation(Reservation reservation) {
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
 
         try {
-            int event_id = 0;
-            int ticketId;
-            int number_of_tickets;
-            double payment_amount;
+            con.setAutoCommit(false);
 
-            try (PreparedStatement getReservationStmt = con.prepareStatement(getReservationDetailsQuery)) {
-                getReservationStmt.setInt(1, reservation_id);
-                ResultSet rs = getReservationStmt.executeQuery();
+            String fetchTicketIdsQuery = "SELECT ticket_id FROM Reservations WHERE customer_id = ? AND event_name = ?";
+            stmt = con.prepareStatement(fetchTicketIdsQuery);
+            stmt.setInt(1, reservation.customer_id());
+            stmt.setString(2, reservation.event_name());
+            rs = stmt.executeQuery();
 
-                if (rs.next()) {
-                    event_id = rs.getInt("event_id");
-                    ticketId = rs.getInt("ticket_id");
-                    number_of_tickets = rs.getInt("number_of_tickets");
-                    payment_amount = rs.getDouble("payment_amount");
-                } else {
-                    System.out.println("Reservation not found.");
-                    return false; // Reservation not found
+            List<Integer> ticketIds = new ArrayList<>();
+            while (rs.next()) {
+                ticketIds.add(rs.getInt("ticket_id"));
+            }
+
+            if(ticketIds.isEmpty()) {
+                System.out.println("No tickets found for this customer and event.");
+                return false;
+            }
+
+            String fetchFilteredTicketsQuery = "SELECT ticket_id, price FROM Tickets WHERE seat_type = ? AND ticket_id IN (" +
+                    ticketIds.stream().map(String::valueOf).collect(Collectors.joining(",")) + ")";
+            stmt = con.prepareStatement(fetchFilteredTicketsQuery);
+            stmt.setString(1, String.valueOf(reservation.seat_type()));
+            rs = stmt.executeQuery();
+
+            List<Integer> filteredTicketIds = new ArrayList<>();
+            double totalPrice = 0;
+            while (rs.next()) {
+                int ticketId = rs.getInt("ticket_id");
+                double ticketPrice = rs.getDouble("price");
+                filteredTicketIds.add(ticketId);
+                totalPrice += ticketPrice;
+            }
+
+            if(filteredTicketIds.isEmpty()) {
+                System.out.println("Error: No tickets found for the requested seat_type that match the reservation.");
+                con.rollback();
+                return false;
+            }
+
+            String deleteReservationsQuery = "DELETE FROM Reservations WHERE ticket_id = ?";
+            stmt = con.prepareStatement(deleteReservationsQuery);
+            for(int ticketId : filteredTicketIds) {
+                stmt.setInt(1, ticketId);
+                stmt.executeUpdate();
+            }
+
+            String unreserveTicketsQuery = "UPDATE Tickets SET reserved = 0 WHERE ticket_id = ?";
+            stmt = con.prepareStatement(unreserveTicketsQuery);
+            for(int ticketId : filteredTicketIds) {
+                stmt.setInt(1, ticketId);
+                stmt.executeUpdate();
+            }
+
+            String updateEventAvailabilityQuery = "UPDATE Events SET availability = availability + ? WHERE event_name = ?";
+            stmt = con.prepareStatement(updateEventAvailabilityQuery);
+            stmt.setInt(1, filteredTicketIds.size());
+            stmt.setString(2, reservation.event_name());
+            stmt.executeUpdate();
+
+            double cancellationFee = 10.0;
+            double refundAmount = totalPrice - cancellationFee;
+            if(refundAmount < 0) {
+                refundAmount = 0;
+            }
+            System.out.println("Refunded " + refundAmount + " euros to User" + reservation.customer_id());
+
+            con.commit();
+            return true;
+        }
+        catch (Exception e) {
+            if(con != null) {
+                try {
+                    con.rollback();
+                } catch (SQLException rollbackEx) {
+                    rollbackEx.printStackTrace();
                 }
             }
-
-            double refundAmount = payment_amount;
-            if (applyCancellationFee) {
-                double cancellationFee = 0.1; // 10% cancellation fee for example
-                refundAmount = payment_amount * (1 - cancellationFee);
-                System.out.println("Cancellation fee applied. Refund: " + refundAmount);
-            }
-
-            // Update ticket availability by adding back the canceled tickets
-            try (PreparedStatement updateAvailabilityStmt = con.prepareStatement(updateTicketAvailabilityQuery)) {
-                updateAvailabilityStmt.setInt(1, number_of_tickets);
-                updateAvailabilityStmt.setInt(2, ticketId);
-
-                int rowsUpdated = updateAvailabilityStmt.executeUpdate();
-                if (rowsUpdated == 0) {
-                    System.out.println("Failed to update ticket availability.");
-                    return false;
-                }
-                System.out.println("Ticket availability updated successfully!");
-            }
-
-            // Delete the reservation
-            try (PreparedStatement deleteReservationStmt = con.prepareStatement(deleteReservationQuery)) {
-                deleteReservationStmt.setInt(1, reservation_id);
-                deleteReservationStmt.executeUpdate();
-                System.out.println("Reservation canceled successfully!");
-            }
-
-            // Handle refund (you can integrate with a payment gateway here for real refunds)
-            System.out.println("Refund amount: " + refundAmount);
-            // Implement the refund logic (e.g., update payment status or integrate with payment provider)
-
-            return true; // Cancellation and refund successful
-
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
             return false;
+        }
+        finally {
+            try {
+                if(rs != null) rs.close();
+                if(stmt != null) stmt.close();
+            }
+            catch (SQLException closeEx) {
+                closeEx.printStackTrace();
+            }
         }
     }
 
