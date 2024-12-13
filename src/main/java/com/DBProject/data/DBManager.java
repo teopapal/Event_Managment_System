@@ -9,6 +9,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import static com.DBProject.gui.enums.Seat_type.*;
@@ -75,10 +76,10 @@ public class DBManager {
             con = DriverManager.getConnection(url + ":" + port + "/" + databaseName + "?characterEncoding=UTF-8", username, password);
             Statement statement = con.createStatement();
 
-            statement.execute(dropReservationsTable);
-            statement.execute(dropTicketsTable);
-            statement.execute(dropCustomersTable);
-            statement.execute(dropEventsTable);
+            //statement.execute(dropReservationsTable);
+            //statement.execute(dropTicketsTable);
+            //statement.execute(dropCustomersTable);
+            //statement.execute(dropEventsTable);
 
             statement.execute(createEventsTable);
             statement.execute(createCustomersTable);
@@ -375,10 +376,11 @@ public class DBManager {
                 try {
                     con.rollback();
                 } catch (SQLException rollbackEx) {
-                    rollbackEx.printStackTrace();
+                    //rollbackEx.printStackTrace();
+                    logExceptionWithMessage("Rollback failed due to an error.", rollbackEx);
                 }
             }
-            e.printStackTrace();
+            logExceptionWithMessage("An error occurred while cancelling the reservation.", e);
             return false;
         }
         finally {
@@ -387,67 +389,80 @@ public class DBManager {
                 if(stmt != null) stmt.close();
             }
             catch (SQLException closeEx) {
-                closeEx.printStackTrace();
+                logExceptionWithMessage("Error occurred while closing database resources", closeEx);
             }
         }
     }
 
-    public static boolean cancelEvent(int event_id) {
-
-        String getReservationsQuery = "SELECT reservation_id, customer_id, ticket_id, number_of_tickets, payment_amount FROM Reservations WHERE event_id = ?";
-//        String updateTicketAvailabilityQuery = "UPDATE Tickets SET availability = availability + ? WHERE ticket_id = ?";
-        String deleteTicketsQuery = "DELETE FROM Tickets WHERE event_id = ?";
-        String deleteReservationsQuery = "DELETE FROM Reservations WHERE event_id = ?";
+    public static boolean cancelEvent(String event_name) {
+        String getReservationsQuery = "SELECT customer_id, SUM(payment_amount) AS total_refund FROM Reservations WHERE event_name = ? GROUP BY customer_id";
+        String deleteReservationsQuery = "DELETE FROM Reservations WHERE event_name = ?";
+        String deleteTicketsQuery = "DELETE FROM Tickets WHERE event_name = ?";
+        String deleteEventQuery = "DELETE FROM Events WHERE event_name = ?";
 
         try {
-            // Get all reservations for the canceled event
-            ArrayList<HashMap<String, Object>> reservations = new ArrayList<>();
+            con.setAutoCommit(false);
+
+            HashMap<Integer, Double> refunds = new HashMap<>();
             try (PreparedStatement getReservationsStmt = con.prepareStatement(getReservationsQuery)) {
-                getReservationsStmt.setInt(1, event_id);
+                getReservationsStmt.setString(1, event_name);
                 ResultSet rs = getReservationsStmt.executeQuery();
 
                 while (rs.next()) {
-                    HashMap<String, Object> reservation = new HashMap<>();
-                    reservation.put("customer_id", rs.getInt("customer_id"));
-                    reservation.put("ticket_id", rs.getInt("ticket_id"));
-                    reservation.put("number_of_tickets", rs.getInt("number_of_tickets"));
-                    reservation.put("payment_amount", rs.getDouble("payment_amount"));
-
-                    reservations.add(reservation);
+                    int customerId = rs.getInt("customer_id");
+                    double totalRefund = rs.getDouble("total_refund");
+                    refunds.put(customerId, totalRefund);
                 }
             }
 
-            // Refund and update ticket availability
-            for (HashMap<String, Object> reservation : reservations) {
-                // Retrieve values from the map
-                int customerId = (int) reservation.get("customer_id");
-                double paymentAmount = (double) reservation.get("payment_amount");
-
-                // Delete the reservations
-                try (PreparedStatement deleteReservationStmt = con.prepareStatement(deleteReservationsQuery)) {
-                    deleteReservationStmt.setInt(1, event_id);
-                    deleteReservationStmt.executeUpdate();
-                    System.out.println("Reservation canceled successfully!");
-                }
-
-
-                // Refund the customer (you can integrate with a payment gateway here)
-                System.out.println("Refunding customer " + customerId + " for amount: " + paymentAmount);
-                // Implement the refund logic here (e.g., payment gateway integration)
-
+            try (PreparedStatement deleteReservationsStmt = con.prepareStatement(deleteReservationsQuery)) {
+                deleteReservationsStmt.setString(1, event_name);
+                deleteReservationsStmt.executeUpdate();
             }
 
-            // Delete the Tickets
-            try (PreparedStatement deleteReservationStmt = con.prepareStatement(deleteTicketsQuery)) {
-                deleteReservationStmt.setInt(1, event_id);
-                deleteReservationStmt.executeUpdate();
-                System.out.println("Tickets canceled successfully!");
+            try (PreparedStatement deleteTicketsStmt = con.prepareStatement(deleteTicketsQuery)) {
+                deleteTicketsStmt.setString(1, event_name);
+                deleteTicketsStmt.executeUpdate();
             }
-            return true; // Event cancellation and refunds successful
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            return false; // Error during cancellation process
+
+            try (PreparedStatement deleteEventStmt = con.prepareStatement(deleteEventQuery)) {
+                deleteEventStmt.setString(1, event_name);
+                deleteEventStmt.executeUpdate();
+            }
+
+            for(Map.Entry<Integer, Double> refund : refunds.entrySet()) {
+                System.out.println("Refunded " + refund.getValue() + " euros to User" + refund.getKey());
+            }
+
+            con.commit();
+            System.out.println("Event cancelled and all related data deleted successfully.");
+            return true;
         }
+        catch (SQLException e) {
+            try {
+                if(con != null) {
+                    con.rollback();
+                }
+            } catch (SQLException rollbackEx) {
+                logExceptionWithMessage("Rollback failed due to an error.", rollbackEx);
+            }
+            logExceptionWithMessage("An error occurred while cancelling the event.", e);
+            return false;
+        }
+        finally {
+            try {
+                if(con != null) {
+                    con.setAutoCommit(true);
+                }
+            } catch (SQLException ex) {
+                logExceptionWithMessage("Failed to reset auto-commit.", ex);
+            }
+        }
+    }
+
+    private static void logExceptionWithMessage(String message, Exception e) {
+        System.err.println(message);
+        e.printStackTrace(System.err);
     }
 
 }
