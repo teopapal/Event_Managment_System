@@ -11,7 +11,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
 import static com.DBProject.gui.enums.Seat_type.*;
 
 public class DBManager {
@@ -87,7 +86,8 @@ public class DBManager {
             statement.execute(createReservationsTable);
 
             System.out.println("Database and tables initialized successfully, with empty tables.");
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             System.out.println("Failed to initialize the database." + e);
         }
     }
@@ -107,7 +107,8 @@ public class DBManager {
                 System.out.println("Email already exists!");
                 return;
             }
-        } catch (SQLException e) {
+        }
+        catch (SQLException e) {
             System.out.println(e.getMessage());
             return;
         }
@@ -122,7 +123,8 @@ public class DBManager {
 
             insertCustomer.executeUpdate();
             System.out.println("Customer registered successfully!");
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             System.out.println(e.getMessage());
         }
 
@@ -152,7 +154,8 @@ public class DBManager {
                 addTickets(event.name(), Regular, 50.0);
                 addTickets(event.name(), Student, 5.0);
             }
-        } catch (SQLException e) {
+        }
+        catch (SQLException e) {
             System.out.println(e.getMessage());
         }
     }
@@ -188,7 +191,8 @@ public class DBManager {
             if(availableTickets.isEmpty()) {
                 System.out.println("No tickets found for the event: " + tickets.event_name() + " with seat type: " + tickets.seat_type() + ".");
             }
-        } catch (SQLException e) {
+        }
+        catch (SQLException e) {
             System.out.println("Error fetching available tickets: " + e.getMessage() + ".");
         }
         return availableTickets;
@@ -265,7 +269,7 @@ public class DBManager {
                     reservationStmt.setString(2, reservation.event_name());
                     reservationStmt.setInt(3, ticketId);
                     reservationStmt.setInt(4, reservation.number_of_tickets());
-                    reservationStmt.setDouble(5, totalPaymentAmount);
+                    reservationStmt.setDouble(5, totalPaymentAmount/reservation.number_of_tickets());
                     reservationStmt.addBatch();
                 }
 
@@ -292,7 +296,8 @@ public class DBManager {
 
             System.out.println("User" + reservation.customer_id() + " charged " + totalPaymentAmount);
 
-        } catch (SQLException e) {
+        }
+        catch (SQLException e) {
             System.out.println("Error while creating reservation or updating availability: " + e.getMessage());
         }
     }
@@ -376,7 +381,6 @@ public class DBManager {
                 try {
                     con.rollback();
                 } catch (SQLException rollbackEx) {
-                    //rollbackEx.printStackTrace();
                     logExceptionWithMessage("Rollback failed due to an error.", rollbackEx);
                 }
             }
@@ -465,4 +469,14 @@ public class DBManager {
         e.printStackTrace(System.err);
     }
 
+    public static boolean executeQuery(String sqlQuery) {
+        try (PreparedStatement stmt = con.prepareStatement(sqlQuery)){
+            stmt.executeUpdate();
+            return true;
+        }
+        catch (SQLException e) {
+            logExceptionWithMessage("An error occurred while executing the query: " + sqlQuery, e);
+            return false;
+        }
+    }
 }
