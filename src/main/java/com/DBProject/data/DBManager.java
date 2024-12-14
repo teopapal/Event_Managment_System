@@ -75,10 +75,10 @@ public class DBManager {
             con = DriverManager.getConnection(url + ":" + port + "/" + databaseName + "?characterEncoding=UTF-8", username, password);
             Statement statement = con.createStatement();
 
-            //statement.execute(dropReservationsTable);
-            //statement.execute(dropTicketsTable);
-            //statement.execute(dropCustomersTable);
-            //statement.execute(dropEventsTable);
+            statement.execute(dropReservationsTable);
+            statement.execute(dropTicketsTable);
+            statement.execute(dropCustomersTable);
+            statement.execute(dropEventsTable);
 
             statement.execute(createEventsTable);
             statement.execute(createCustomersTable);
@@ -154,6 +154,7 @@ public class DBManager {
                 addTickets(event.name(), Regular, 50.0);
                 addTickets(event.name(), Student, 5.0);
             }
+            System.out.println("Tickets created successfully!");
         }
         catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -207,7 +208,6 @@ public class DBManager {
             insertEvent.setDouble(3, price);
 
             insertEvent.executeUpdate();
-            System.out.println("Ticket created successfully!");
         }
         catch (SQLException e) {
             System.out.println(e.getMessage());
