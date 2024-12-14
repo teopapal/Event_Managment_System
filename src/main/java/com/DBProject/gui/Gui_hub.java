@@ -23,9 +23,9 @@ public class Gui_hub {
         JPanel content_panel = panel_manager.get_content_panel();
         CardLayout card_layout = panel_manager.get_card_layout();
         main_frame.setSize(700, 500);
-        main_frame.setVisible(true);
 
         JPanel main_panel = create_main_menu(panel_manager);
+        main_frame.setVisible(true);
         content_panel.add(main_panel, "main_panel");
         card_layout.show(content_panel, "main_panel");
     }
