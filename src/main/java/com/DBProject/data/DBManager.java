@@ -399,12 +399,22 @@ public class DBManager {
     }
 
     public static boolean cancelEvent(String event_name) {
+        String checkEventExistsQuery = "SELECT 1 FROM Events WHERE event_name = ?";
         String getReservationsQuery = "SELECT customer_id, SUM(payment_amount) AS total_refund FROM Reservations WHERE event_name = ? GROUP BY customer_id";
         String deleteReservationsQuery = "DELETE FROM Reservations WHERE event_name = ?";
         String deleteTicketsQuery = "DELETE FROM Tickets WHERE event_name = ?";
         String deleteEventQuery = "DELETE FROM Events WHERE event_name = ?";
 
         try {
+            try(PreparedStatement checkEventStmt = con.prepareStatement(checkEventExistsQuery)) {
+                checkEventStmt.setString(1, event_name);
+                ResultSet rs = checkEventStmt.executeQuery();
+                if(!rs.next()) {
+                    System.out.println("Event with the name '" + event_name + "' does not exist.");
+                    return false;
+                }
+            }
+
             con.setAutoCommit(false);
 
             HashMap<Integer, Double> refunds = new HashMap<>();
@@ -469,10 +479,29 @@ public class DBManager {
         e.printStackTrace(System.err);
     }
 
-    public static boolean executeQuery(String sqlQuery) {
+    public static Object executeQuery(String sqlQuery) {
         try (PreparedStatement stmt = con.prepareStatement(sqlQuery)){
-            stmt.executeUpdate();
-            return true;
+            if(sqlQuery.trim().toUpperCase().startsWith("SELECT")) {
+                try (ResultSet rs = stmt.executeQuery()) {
+                    List<Map<String, Object>> results = new ArrayList<>();
+                    ResultSetMetaData metaData = rs.getMetaData();
+                    int columnCount = metaData.getColumnCount();
+
+                    while(rs.next()) {
+                        Map<String, Object> row = new HashMap<>();
+                        for(int i=1; i<=columnCount; i++) {
+                            row.put(metaData.getColumnName(i), rs.getObject(i));
+                        }
+                        results.add(row);
+                    }
+                    System.out.println(results);
+                    return results;
+                }
+            }
+            else {
+                stmt.executeUpdate();
+                return true;
+            }
         }
         catch (SQLException e) {
             logExceptionWithMessage("An error occurred while executing the query: " + sqlQuery, e);
