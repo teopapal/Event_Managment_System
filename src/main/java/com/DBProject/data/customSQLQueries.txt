@@ -1,0 +1,103 @@
+Κατάσταση διαθέσιμων και κρατημένων θέσεων ανά εκδήλωση:
+SELECT 
+    e.event_name,
+    e.capacity AS total_seats,
+    (e.capacity - e.availability) AS reserved_seats,
+    e.availability AS available_seats
+FROM 
+    events e;
+===============================================================================
+Έσοδα από πωλήσεις ανά εκδήλωση:
+SELECT 
+    e.event_name,
+    COALESCE(SUM(t.price), 0) AS total_revenue
+FROM 
+    Events e
+LEFT JOIN 
+    Tickets t
+ON 
+    e.event_name = t.event_name
+WHERE 
+    t.reserved = TRUE
+GROUP BY 
+    e.event_name;
+===============================================================================
+Δημοφιλέστερη εκδήλωση βάσει κρατήσεων:
+SELECT 
+    r.event_name,
+    SUM(r.number_of_tickets) AS total_tickets_reserved
+FROM 
+    Reservations r
+GROUP BY 
+    r.event_name
+ORDER BY 
+    total_tickets_reserved DESC
+LIMIT 1;
+===============================================================================
+Εκδήλωση με τα περισσότερα έσοδα σε ένα χρονικό εύρος:
+SELECT 
+    e.event_name,
+    SUM(r.payment_amount) AS total_revenue
+FROM 
+    Reservations r
+JOIN 
+    Events e ON r.event_name = e.event_name
+WHERE 
+    e.event_date BETWEEN '2024-12-30' AND '2025-05-05'
+GROUP BY 
+    e.event_name
+ORDER BY 
+    total_revenue DESC
+LIMIT 1;
+===============================================================================
+Προβολή κρατήσεων ανά χρονική περίοδο:
+SELECT 
+    r.reservation_id AS Κωδικός_Κράτησης,
+    CONCAT(c.firstName, ' ', c.lastName) AS Πελάτης,
+    r.event_name AS Εκδήλωση,
+    e.event_date AS Ημερομηνία_Εκδήλωσης,
+    r.ticket_id AS Εισιτήριο,
+    r.number_of_tickets AS Πλήθος_Εισιτηρίων,
+    r.reservation_date AS Ημερομηνία_Κράτησης,
+    r.payment_amount AS Πληρωμή
+FROM 
+    Reservations r
+JOIN 
+    Customers c ON r.customer_id = c.customer_id
+JOIN 
+    Events e ON r.event_name = e.event_name
+WHERE 
+    e.event_date BETWEEN '1000-01-01' AND '2026-12-31' 
+ORDER BY 
+    e.event_date ASC;
+===============================================================================
+Τα συνολικά έσοδα από την πώληση VIP ή γενικών εισιτηρίων ανά εκδήλωση ή συνολικά:
+SELECT 
+    e.event_name AS Εκδήλωση,
+    SUM(r.payment_amount) AS Συνολικά_Έσοδα
+FROM 
+    Reservations r
+JOIN 
+    Tickets t ON r.ticket_id = t.ticket_id
+JOIN 
+    Events e ON r.event_name = e.event_name
+WHERE 
+    t.seat_type IN ('VIP', 'Regular') 
+GROUP BY 
+    e.event_name
+UNION ALL
+SELECT 
+    'Συνολικά' AS Εκδήλωση,
+    SUM(r.payment_amount) AS Συνολικά_Έσοδα
+FROM 
+    Reservations r
+JOIN 
+    Tickets t ON r.ticket_id = t.ticket_id
+JOIN 
+    Events e ON r.event_name = e.event_name
+WHERE 
+    t.seat_type IN ('VIP', 'Regular')
+ORDER BY 
+    Συνολικά_Έσοδα DESC;
+
+
