@@ -11,34 +11,42 @@ import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.DBProject.gui.helper_functions.helper_functions.*;
+
 public class reservation {
 
     public static void add_reservation(PanelManager panel_manager) {
         JPanel reservation_panel = new JPanel(new BorderLayout());
+        reservation_panel.setBackground(Color.DARK_GRAY);
 
         JPanel top_panel = new JPanel(new BorderLayout());
-        JButton back_button = new JButton("Back");
+        top_panel.setBackground(Color.DARK_GRAY);
+        JButton back_button = create_button("Back");
+        back_button.setPreferredSize(new Dimension(60, 30));
         back_button.addActionListener(_ -> panel_manager.get_card_layout().show(panel_manager.get_content_panel(), "main_panel"));
         top_panel.add(back_button, BorderLayout.WEST);
 
         JLabel title = new JLabel("Add a Reservation", SwingConstants.CENTER);
         title.setFont(new Font("Arial", Font.BOLD, 16));
+        title.setForeground(Color.WHITE);
         top_panel.add(title, BorderLayout.CENTER);
 
         reservation_panel.add(top_panel, BorderLayout.NORTH);
 
-
         JPanel form_panel = new JPanel(new GridBagLayout());
         form_panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        form_panel.setBackground(Color.DARK_GRAY);
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(5, 5, 5, 5);
 
-        JLabel event_name_label = new JLabel("Event Name:");
-        JTextField event_name = new JTextField();
+        JLabel event_name_label = create_label("Event Name:");
+        JTextField event_name = create_field();
 
-        JLabel seat_type_label = new JLabel("Seat Type:");
+        JLabel seat_type_label = create_label("Seat Type:");
         JComboBox<Seat_type> seat_type_box = new JComboBox<>(Seat_type.values());
+        seat_type_box.setBackground(Color.DARK_GRAY);
+        seat_type_box.setForeground(Color.WHITE);
 
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -54,16 +62,16 @@ public class reservation {
 
         reservation_panel.add(form_panel, BorderLayout.CENTER);
 
-
         JPanel bottom_panel = new JPanel(new BorderLayout());
-        JButton submit_button = new JButton("Search Tickets");
+        bottom_panel.setBackground(Color.DARK_GRAY);
+        JButton submit_button = create_button("Search Tickets");
         JLabel message = new JLabel("", SwingConstants.CENTER);
+        message.setForeground(Color.WHITE);
 
         bottom_panel.add(submit_button, BorderLayout.CENTER);
         bottom_panel.add(message, BorderLayout.SOUTH);
 
         reservation_panel.add(bottom_panel, BorderLayout.SOUTH);
-
 
         submit_button.addActionListener(_ -> {
             if (event_name.getText().isEmpty()) {
@@ -99,24 +107,32 @@ public class reservation {
 
                     JTable table = new JTable(table_data, column_names);
                     table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+                    table.setBackground(Color.DARK_GRAY);
+                    table.setForeground(Color.WHITE);
+                    table.setGridColor(Color.GRAY);
+                    table.setSelectionBackground(Color.GRAY);
+                    table.setSelectionForeground(Color.WHITE);
+
+                    table.setFillsViewportHeight(true);
 
                     JScrollPane scrollPane = new JScrollPane(table);
+                    scrollPane.getViewport().setBackground(Color.DARK_GRAY);
+                    scrollPane.setBackground(Color.DARK_GRAY);
                     tickets_frame.add(scrollPane);
 
                     JPanel text_panel = new JPanel(new GridBagLayout());
                     text_panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+                    text_panel.setBackground(Color.DARK_GRAY);
 
                     GridBagConstraints gbc_text = new GridBagConstraints();
                     gbc_text.insets = new Insets(4, 4, 4, 4);
                     gbc_text.fill = GridBagConstraints.HORIZONTAL;
 
-                    JLabel customer_id_label = new JLabel("Customer ID:");
-                    JTextField customer_id = new JTextField(2);
-                    customer_id.setPreferredSize(new Dimension(100, 20));
+                    JLabel customer_id_label = create_label("Customer ID:");
+                    JTextField customer_id = create_field();
 
-                    JLabel number_of_tickets_label = new JLabel("Number of Tickets:");
-                    JTextField number_of_tickets = new JTextField(2);
-                    number_of_tickets.setPreferredSize(new Dimension(100, 20));
+                    JLabel number_of_tickets_label = create_label("Number of Tickets:");
+                    JTextField number_of_tickets = create_field();
 
                     gbc_text.gridx = 0;
                     gbc_text.gridy = 0;
@@ -133,7 +149,7 @@ public class reservation {
                     gbc_text.gridx = 1;
                     gbc_text.gridy = 2;
                     gbc_text.anchor = GridBagConstraints.CENTER;
-                    JButton book_button = new JButton("Book Ticket");
+                    JButton book_button = create_button("Book Ticket");
                     text_panel.add(book_button, gbc_text);
 
                     tickets_frame.add(text_panel, BorderLayout.SOUTH);
@@ -178,34 +194,42 @@ public class reservation {
     }
 
 
+
     public static void cancel_reservation(PanelManager panel_manager) {
         JPanel cancel_panel = new JPanel(new BorderLayout());
+        cancel_panel.setBackground(Color.DARK_GRAY);
 
         JPanel top_panel = new JPanel(new BorderLayout());
-        JButton back_button = new JButton("Back");
+        top_panel.setBackground(Color.DARK_GRAY);
+        JButton back_button = create_button("Back");
+        back_button.setPreferredSize(new Dimension(60, 30));
         back_button.addActionListener(_ -> panel_manager.get_card_layout().show(panel_manager.get_content_panel(), "main_panel"));
         top_panel.add(back_button, BorderLayout.WEST);
 
         JLabel title = new JLabel("Cancel Reservation", SwingConstants.CENTER);
         title.setFont(new Font("Arial", Font.BOLD, 16));
+        title.setForeground(Color.WHITE);
         top_panel.add(title, BorderLayout.CENTER);
 
         cancel_panel.add(top_panel, BorderLayout.NORTH);
 
         JPanel form_panel = new JPanel(new GridBagLayout());
+        form_panel.setBackground(Color.DARK_GRAY);
         form_panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(5, 5, 5, 5);
 
-        JLabel event_name_label = new JLabel("Event Name:");
-        JTextField event_name = new JTextField();
+        JLabel event_name_label = create_label("Event Name:");;
+        JTextField event_name = create_field();
 
-        JLabel customer_id_label = new JLabel("Customer ID:");
-        JTextField customer_id = new JTextField();
+        JLabel customer_id_label = create_label("Customer ID:");
+        JTextField customer_id = create_field();
 
-        JLabel seat_type_label = new JLabel("Seat Type:");
+        JLabel seat_type_label = create_label("Seat Type:");
         JComboBox<Seat_type> seat_type_box = new JComboBox<>(Seat_type.values());
+        seat_type_box.setBackground(Color.DARK_GRAY);
+        seat_type_box.setForeground(Color.WHITE);
 
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -228,8 +252,10 @@ public class reservation {
         cancel_panel.add(form_panel, BorderLayout.CENTER);
 
         JPanel bottom_panel = new JPanel(new BorderLayout());
-        JButton submit_button = new JButton("Cancel Reservation");
+        bottom_panel.setBackground(Color.DARK_GRAY);
+        JButton submit_button = create_button("Cancel Reservation");
         JLabel message = new JLabel("", SwingConstants.CENTER);
+        message.setForeground(Color.WHITE);
 
         bottom_panel.add(submit_button, BorderLayout.CENTER);
         bottom_panel.add(message, BorderLayout.SOUTH);
@@ -241,7 +267,7 @@ public class reservation {
                 message.setText("All fields are required!");
                 message.setForeground(Color.RED);
             } else {
-                message.setText("Reservation cancelled successfully!");
+                message.setText("Cancelling reservation...");
                 message.setForeground(Color.GREEN);
 
                 System.out.println("Cancel Reservation Details:");
@@ -249,7 +275,8 @@ public class reservation {
                 System.out.println("Customer ID: " + customer_id.getText());
                 System.out.println("Seat Type: " + seat_type_box.getSelectedItem());
 
-                Reservation reservation = new Reservation((Seat_type) seat_type_box.getSelectedItem(), Integer.parseInt(customer_id.getText()), event_name.getText(), 0);
+                Reservation reservation = new Reservation((Seat_type) seat_type_box.getSelectedItem(),
+                        Integer.parseInt(customer_id.getText()), event_name.getText(), 0);
                 if (DBManager.cancelReservation(reservation)) {
                     message.setText("Reservation cancelled successfully!");
                 } else {

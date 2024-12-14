@@ -6,86 +6,80 @@ import com.DBProject.gui.PanelManager.PanelManager;
 import javax.swing.*;
 import java.awt.*;
 
+import static com.DBProject.gui.helper_functions.helper_functions.create_button;
+
 public class sql_input {
     public static void create_sql_input(PanelManager panel_manager) {
-        // Create SQL Input panel
         JPanel sql_input_panel = new JPanel(new BorderLayout());
+        sql_input_panel.setBackground(Color.DARK_GRAY);
 
-        // Top panel with Back button and title
         JPanel top_panel = new JPanel(new BorderLayout());
-        top_panel.setBackground(new Color(45, 45, 45)); // Dark background for top panel
+        top_panel.setBackground(Color.DARK_GRAY);
 
-        JButton back_button = new JButton("Back");
-        back_button.setBackground(new Color(60, 60, 60)); // Dark button background
-        back_button.setForeground(Color.WHITE); // White text
+        JButton back_button = create_button("Back");
+        back_button.setPreferredSize(new Dimension(60, 30));
         back_button.addActionListener(_ -> {
-            // Go back to the main panel
             panel_manager.get_card_layout().show(panel_manager.get_content_panel(), "main_panel");
         });
         top_panel.add(back_button, BorderLayout.WEST);
 
         JLabel title = new JLabel("SQL Input", SwingConstants.CENTER);
         title.setFont(new Font("Arial", Font.BOLD, 16));
-        title.setForeground(Color.WHITE); // Light text for title
+        title.setForeground(Color.WHITE);
         top_panel.add(title, BorderLayout.CENTER);
 
         sql_input_panel.add(top_panel, BorderLayout.NORTH);
 
-        // Create form panel for SQL input
         JPanel sql_input_form = new JPanel(new GridBagLayout());
-        sql_input_form.setBackground(new Color(45, 45, 45)); // Dark background for form panel
+        sql_input_form.setBackground(Color.DARK_GRAY);
         sql_input_form.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(5, 5, 5, 5);
 
-        // SQL Input Label and TextField
-        JLabel sql_input_label = new JLabel("SQL Input:");
-        sql_input_label.setForeground(Color.WHITE); // Light text for label
-        JTextArea sql_input = new JTextArea(10, 50); // Adjust size for textarea
-        sql_input.setPreferredSize(new Dimension(500, 100));
-        sql_input.setBackground(new Color(60, 60, 60)); // Dark background for text area
-        sql_input.setForeground(Color.WHITE); // White text
-        sql_input.setCaretColor(Color.WHITE); // White cursor
+        JTextArea sql_input = new JTextArea(15, 55);
+        sql_input.setBackground(new Color(60, 60, 60));
+        sql_input.setForeground(Color.WHITE);
+        sql_input.setCaretColor(Color.WHITE);
+        sql_input.setBorder(BorderFactory.createLineBorder(Color.GRAY));
+        sql_input.setFont(new Font("Arial", Font.BOLD, 14));
 
         gbc.gridx = 0;
         gbc.gridy = 0;
-        sql_input_form.add(sql_input_label, gbc);
+        sql_input_form.add(new JScrollPane(sql_input), gbc);
 
-        gbc.gridx = 1;
-        sql_input_form.add(new JScrollPane(sql_input), gbc); // Wrap text area in JScrollPane
+        sql_input_panel.add(sql_input_form, BorderLayout.CENTER);
 
-        // Submit Button
-        JButton submit_button = new JButton("Submit");
-        submit_button.setBackground(new Color(60, 60, 60)); // Dark background
-        submit_button.setForeground(Color.WHITE); // White text
+        JPanel bottom_panel = new JPanel(new FlowLayout());
+        bottom_panel.setBackground(Color.DARK_GRAY);
+
+        JButton submit_button = create_button("Submit");
+
         submit_button.addActionListener(_ -> {
             String sql = sql_input.getText();
             if (!sql.isEmpty()) {
-                // Print SQL input to console or process it
                 System.out.println("SQL Input: " + sql);
-                DBManager.executeQuery(sql);
-                // You can also add further handling here, such as saving or executing the SQL.
-                JOptionPane.showMessageDialog(panel_manager.get_content_panel(), "SQL Submitted: " + sql, "SQL Input", JOptionPane.INFORMATION_MESSAGE);
+                Object text = DBManager.executeQuery(sql);
+                JOptionPane.showMessageDialog(panel_manager.get_content_panel(), text, "SQL Output", JOptionPane.INFORMATION_MESSAGE);
             } else {
-                // Display error message if SQL input is empty
                 JOptionPane.showMessageDialog(panel_manager.get_content_panel(), "Please enter SQL input!", "Error", JOptionPane.ERROR_MESSAGE);
             }
         });
 
-        gbc.gridx = 0;
-        gbc.gridy = 1;
-        gbc.gridwidth = 2;
-        sql_input_form.add(submit_button, gbc);
+        bottom_panel.add(submit_button);
+        sql_input_panel.add(bottom_panel, BorderLayout.SOUTH);
 
-        sql_input_panel.add(sql_input_form, BorderLayout.CENTER);
+        JScrollPane scroll_bar = new JScrollPane(sql_input_form);
+        scroll_bar.setBackground(Color.DARK_GRAY);
+        scroll_bar.getViewport().setBackground(Color.DARK_GRAY);
+        scroll_bar.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        scroll_bar.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        scroll_bar.getVerticalScrollBar().setUnitIncrement(16);
+        scroll_bar.setBorder(null);
 
-        // Add the SQL input panel to the content panel and show it
+        sql_input_panel.add(scroll_bar, BorderLayout.CENTER);
+
         panel_manager.get_content_panel().add(sql_input_panel, "sql_input_panel");
-
-        // Show the new panel
         panel_manager.get_card_layout().show(panel_manager.get_content_panel(), "sql_input_panel");
     }
-
-
 }

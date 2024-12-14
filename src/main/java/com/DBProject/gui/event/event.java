@@ -13,41 +13,50 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
+import static com.DBProject.gui.helper_functions.helper_functions.*;
+
 public class event {
     public static void create_event_form(PanelManager panel_manager) {
         JPanel create_event_panel = new JPanel(new BorderLayout());
+        create_event_panel.setBackground(Color.DARK_GRAY);
 
         JPanel top_panel = new JPanel(new BorderLayout());
-        JButton back_button = new JButton("Back");
+        top_panel.setBackground(Color.DARK_GRAY);
+        JButton back_button = create_button("Back");
+        back_button.setPreferredSize(new Dimension(60, 30));
         back_button.addActionListener(_ -> panel_manager.get_card_layout().show(panel_manager.get_content_panel(), "main_panel"));
         top_panel.add(back_button, BorderLayout.WEST);
 
         JLabel title = new JLabel("Create a new Event", SwingConstants.CENTER);
         title.setFont(new Font("Arial", Font.BOLD, 16));
+        title.setForeground(Color.WHITE);
         top_panel.add(title, BorderLayout.CENTER);
 
         create_event_panel.add(top_panel, BorderLayout.NORTH);
 
         JPanel event_form = new JPanel(new GridBagLayout());
         event_form.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        event_form.setBackground(Color.DARK_GRAY);
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(5, 5, 5, 5);
 
-        JLabel event_name_label = new JLabel("Event Name:");
-        JTextField event_name = new JTextField();
+        JLabel event_name_label = create_label("Event Name:");
+        JTextField event_name = create_field();
 
-        JLabel event_date_label = new JLabel("Event Date (DD/MM/YYYY):");
-        JTextField event_date = new JTextField();
+        JLabel event_date_label = create_label("Event Date (dd/mm/yyyy):");
+        JTextField event_date = create_field();
 
-        JLabel event_time_label = new JLabel("Event Time (HH:MM):");
-        JTextField event_time = new JTextField();
+        JLabel event_time_label = create_label("Event Time (hh:mm):");
+        JTextField event_time = create_field();
 
-        JLabel event_type_label = new JLabel("Event Type:");
+        JLabel event_type_label = create_label("Event Type:");
         JComboBox<Event_type> event_type_box = new JComboBox<>(Event_type.values());
+        event_type_box.setBackground(Color.DARK_GRAY);
+        event_type_box.setForeground(Color.WHITE);
 
-        JLabel event_capacity_label = new JLabel("Event Capacity:");
-        JTextField event_capacity = new JTextField();
+        JLabel event_capacity_label = create_label("Event Capacity:");
+        JTextField event_capacity = create_field();
 
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -81,9 +90,9 @@ public class event {
 
         create_event_panel.add(event_form, BorderLayout.CENTER);
 
-
         JPanel bottom_panel = new JPanel(new BorderLayout());
-        JButton submit_button = new JButton("Create Event");
+        bottom_panel.setBackground(Color.DARK_GRAY);
+        JButton submit_button = create_button("Create Event");
         JLabel message = new JLabel("", SwingConstants.CENTER);
 
         bottom_panel.add(submit_button, BorderLayout.CENTER);
@@ -116,9 +125,7 @@ public class event {
                     message.setText("Event created successfully!");
                     message.setForeground(Color.GREEN);
 
-
-
-                    Timer timer = new Timer(1000, e -> panel_manager.get_card_layout().show(panel_manager.get_content_panel(), "main_panel"));
+                    Timer timer = new Timer(1000, _ -> panel_manager.get_card_layout().show(panel_manager.get_content_panel(), "main_panel"));
                     timer.setRepeats(false);
                     timer.start();
                 } catch (Exception ex) {
@@ -134,27 +141,31 @@ public class event {
 
     public static void cancel_event(PanelManager panel_manager) {
         JPanel cancel_event_panel = new JPanel(new BorderLayout());
+        cancel_event_panel.setBackground(Color.DARK_GRAY);
 
         JPanel top_panel = new JPanel(new BorderLayout());
-        JButton back_button = new JButton("Back");
+        top_panel.setBackground(Color.DARK_GRAY);
+        JButton back_button = create_button("Back");
+        back_button.setPreferredSize(new Dimension(60, 30));
         back_button.addActionListener(_ -> panel_manager.get_card_layout().show(panel_manager.get_content_panel(), "main_panel"));
         top_panel.add(back_button, BorderLayout.WEST);
 
         JLabel title = new JLabel("Cancel an Event", SwingConstants.CENTER);
         title.setFont(new Font("Arial", Font.BOLD, 16));
+        title.setForeground(Color.WHITE);
         top_panel.add(title, BorderLayout.CENTER);
 
         cancel_event_panel.add(top_panel, BorderLayout.NORTH);
 
         JPanel event_form = new JPanel(new GridBagLayout());
         event_form.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        event_form.setBackground(Color.DARK_GRAY);
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(5, 5, 5, 5);
 
-        JLabel event_name_label = new JLabel("Event Name:");
-        JTextField event_name = new JTextField();
-        event_name.setPreferredSize(new Dimension(100, 20));
+        JLabel event_name_label = create_label("Event Name:");
+        JTextField event_name = create_field();
 
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -165,7 +176,8 @@ public class event {
         cancel_event_panel.add(event_form, BorderLayout.CENTER);
 
         JPanel bottom_panel = new JPanel(new BorderLayout());
-        JButton submit_button = new JButton("Cancel Event");
+        bottom_panel.setBackground(Color.DARK_GRAY);
+        JButton submit_button = create_button("Cancel Event");
         JLabel message = new JLabel("", SwingConstants.CENTER);
 
         bottom_panel.add(submit_button, BorderLayout.CENTER);
@@ -175,18 +187,17 @@ public class event {
 
         submit_button.addActionListener(_ -> {
             if (event_name.getText().isEmpty()) {
-                message.setText("Event ID is required!");
+                message.setText("Event Name is required!");
                 message.setForeground(Color.RED);
             } else {
                 try {
                     if (DBManager.cancelEvent(event_name.getText())) {
-                        message.setText("Event created successfully!");
+                        message.setText("Event cancelled successfully!");
                         message.setForeground(Color.GREEN);
                     } else {
-                        message.setText("Event creation failed!");
+                        message.setText("Event cancellation failed!");
                         message.setForeground(Color.RED);
                     }
-
 
                     Timer timer = new Timer(1000, _ -> panel_manager.get_card_layout().show(panel_manager.get_content_panel(), "main_panel"));
                     timer.setRepeats(false);
