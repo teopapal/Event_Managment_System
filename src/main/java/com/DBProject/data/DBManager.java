@@ -302,6 +302,16 @@ public class DBManager {
         }
     }
 
+    private static final String FETCH_FILTERED_TICKETS_QUERY = "SELECT ticket_id, price FROM Tickets WHERE seat_type = ? AND ticket_id IN (%s)";
+
+    private static PreparedStatement prepareStatementWithParameters(String query, Object... parameters) throws SQLException {
+        PreparedStatement stmt = con.prepareStatement(query);
+        for (int i = 0; i < parameters.length; i++) {
+            stmt.setObject(i + 1, parameters[i]);
+        }
+        return stmt;
+    }
+
     public static boolean cancelReservation(Reservation reservation) {
         PreparedStatement stmt = null;
         ResultSet rs = null;
@@ -325,10 +335,9 @@ public class DBManager {
                 return false;
             }
 
-            String fetchFilteredTicketsQuery = "SELECT ticket_id, price FROM Tickets WHERE seat_type = ? AND ticket_id IN (" +
-                    ticketIds.stream().map(String::valueOf).collect(Collectors.joining(",")) + ")";
-            stmt = con.prepareStatement(fetchFilteredTicketsQuery);
-            stmt.setString(1, String.valueOf(reservation.seat_type()));
+            String ticketIdsPlaceholder = ticketIds.stream().map(String::valueOf).collect(Collectors.joining(","));
+            String formattedQuery = String.format(FETCH_FILTERED_TICKETS_QUERY, ticketIdsPlaceholder);
+            stmt = prepareStatementWithParameters(formattedQuery, String.valueOf(reservation.seat_type()));
             rs = stmt.executeQuery();
 
             List<Integer> filteredTicketIds = new ArrayList<>();
